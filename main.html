@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공연 정보 입력</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin: 10px 0;
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="url"], input[type="datetime-local"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>공연 정보 입력</h1>
+    
+    <form id="ticketForm">
+        <div class="form-group">
+            <label for="exclusive">인터파크 단독여부:</label>
+            <input type="checkbox" id="exclusive" name="exclusive">
+        </div>
+        
+        <div class="form-group">
+            <label for="openNotice">티켓 오픈 공지여부:</label>
+            <input type="checkbox" id="openNotice" name="openNotice">
+        </div>
+        
+        <div class="form-group">
+            <label for="openDate">티켓 오픈:</label>
+            <input type="datetime-local" id="openDate" name="openDate" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="eventPeriod">티켓오픈 공연기간:</label>
+            <input type="text" id="eventPeriod" name="eventPeriod" placeholder="예: 2024년 12월 10일(화)~12월 29일(일)" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="snsUrl">SNS 주소:</label>
+            <input type="url" id="snsUrl" name="snsUrl" placeholder="예: https://sns.example.com">
+        </div>
+        
+        <div class="form-group">
+            <label for="siteUrl">사이트 주소:</label>
+            <input type="text" id="siteUrl" name="siteUrl" placeholder="https://tickets.interpark.com/goods/24013832" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="place">장소 (Place):</label>
+            <input type="text" id="place" name="place" placeholder="예: 플러스씨어터, 24000240" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="discount">할인:</label>
+            <input type="text" id="discount" name="discount" placeholder="default=BMBI" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="seatGrade">좌석 등급 시작:</label>
+            <input type="text" id="seatGrade" name="seatGrade" placeholder="예: R석, 1" required>
+        </div>
+        <div class="form-group">
+            <label for="seatGrade">좌석 등급 끝:</label>
+            <input type="text" id="seatGrade" name="seatGrade" placeholder="예: R석, 8" required>
+        </div>
+
+        <button type="submit">제출</button>
+    </form>
+
+    <label for="bookingLink">좌석분석:</label>
+    <button id="bookingLink" onclick="window.open('https://poticket.interpark.com/Ticket/Seat/BookingSeatDetail.asp?GoodsCode=24013832&PlaceCode=24000240&TmgsOrNot=D2003&LocOfImage=&Tiki=&BizCode=Webbr&PlaySeq=001&SessionId=&Block=001', '_blank', 'width=800,height=600')">
+        좌석 분석
+    </button>
+    <label for="bookingLink">회차분석:</label>
+    <button id="bookingLink" onclick="window.open('https://api-ticketfront.interpark.com/v1/goods/_______/playSeq?startDate=_______&endDate=_______&goodsCode=_______&page=1&pageSize=1550&preSale=false', '_blank', 'width=800,height=600')">
+        회차분석
+    </button>
+    <script src="main.js"></script>
+
+</body>
+</html>
