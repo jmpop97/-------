@@ -6,13 +6,13 @@
     <title>공연 정보 입력</title>
     <style>
         body {
+            display: flex;
+            gap: 20px;
             font-family: Arial, sans-serif;
-            line-height: 1.6;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            margin: 20px;
+        }
+        .container {
+            width: 50%;
         }
         h1 {
             text-align: center;
@@ -47,10 +47,40 @@
         button:hover {
             background-color: #0056b3;
         }
+        .preview {
+            width: 50%;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .preview p {
+            font-size: 16px;
+            line-height: 1.4;
+            color: #333;
+        }
+        .fixed-link-button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    .fixed-link-button:hover {
+        background-color: #0056b3;
+    }
     </style>
 </head>
 <body>
 
+<div class="container">
     <h1>공연 정보 입력</h1>
     
     <form id="ticketForm">
@@ -66,54 +96,60 @@
         
         <div class="form-group">
             <label for="openDate">티켓 오픈:</label>
-            <input type="datetime-local" id="openDate" name="openDate" required>
+            <input type="text" id="openDate" name="openDate" required>
         </div>
         
         <div class="form-group">
             <label for="eventPeriod">티켓오픈 공연기간:</label>
-            <input type="text" id="eventPeriod" name="eventPeriod" placeholder="예: 2024년 12월 10일(화)~12월 29일(일)" required>
+            <input type="text" id="eventPeriod" name="eventPeriod"required>
         </div>
         
         <div class="form-group">
             <label for="snsUrl">SNS 주소:</label>
-            <input type="url" id="snsUrl" name="snsUrl" placeholder="예: https://sns.example.com">
+            <input type="text" id="snsUrl" name="snsUrl" >
         </div>
         
         <div class="form-group">
             <label for="siteUrl">사이트 주소:</label>
-            <input type="text" id="siteUrl" name="siteUrl" placeholder="https://tickets.interpark.com/goods/24013832" required>
+            <input type="text" id="siteUrl" name="siteUrl"required>
         </div>
         
         <div class="form-group">
             <label for="place">장소 (Place):</label>
-            <input type="text" id="place" name="place" placeholder="예: 플러스씨어터, 24000240" required>
+            <input type="text" id="place" name="place" required>
         </div>
         
         <div class="form-group">
             <label for="discount">할인:</label>
-            <input type="text" id="discount" name="discount" placeholder="default=BMBI" required>
+            <input type="text" id="discount" name="discount"  required>
         </div>
         
         <div class="form-group">
-            <label for="seatGrade">좌석 등급 시작:</label>
-            <input type="text" id="seatGrade" name="seatGrade" placeholder="예: R석, 1" required>
+            <label for="seatGradeStart">좌석 등급 시작:</label>
+            <input type="text" id="seatGradeStart" name="seatGradeStart"  required>
         </div>
         <div class="form-group">
-            <label for="seatGrade">좌석 등급 끝:</label>
-            <input type="text" id="seatGrade" name="seatGrade" placeholder="예: R석, 8" required>
+            <label for="seatGradeEnd">좌석 등급 끝:</label>
+            <input type="text" id="seatGradeEnd" name="seatGradeEnd"  required>
         </div>
-
-        <button type="submit">제출</button>
     </form>
+</div>
 
-    <label for="bookingLink">좌석분석:</label>
-    <button id="bookingLink" onclick="window.open('https://poticket.interpark.com/Ticket/Seat/BookingSeatDetail.asp?GoodsCode=24013832&PlaceCode=24000240&TmgsOrNot=D2003&LocOfImage=&Tiki=&BizCode=Webbr&PlaySeq=001&SessionId=&Block=001', '_blank', 'width=800,height=600')">
-        좌석 분석
-    </button>
-    <label for="bookingLink">회차분석:</label>
-    <button id="bookingLink" onclick="window.open('https://api-ticketfront.interpark.com/v1/goods/_______/playSeq?startDate=_______&endDate=_______&goodsCode=_______&page=1&pageSize=1550&preSale=false', '_blank', 'width=800,height=600')">
-        회차분석
-    </button>
+<div class="preview">
+    <h2>실시간 미리보기</h2>
+    <p><strong>단독 여부:</strong> <span id="previewExclusive">N</span></p>
+    <p><strong>티켓 오픈 공지 여부:</strong> <span id="previewOpenNotice">N</span></p>
+    <p><strong>티켓 오픈 날짜:</strong> <span id="previewOpenDate">2024년 11월 7일(목) 오전 11시</span></p>
+    <p><strong>공연 기간:</strong> <span id="previewEventPeriod">예: 2024년 12월 10일(화)~12월 29일(일)</span></p>
+    <p><strong>SNS 주소:</strong> <span id="previewSnsUrl">예: https://sns.example.com</span></p>
+    <p><strong>사이트 주소:</strong> <span id="previewSiteUrl">https://tickets.interpark.com/goods/24013832</span></p>
+    <p><strong>장소:</strong> <span id="previewPlace">예: 플러스씨어터, 24000240</span></p>
+    <p><strong>할인:</strong> <span id="previewDiscount">default=BMBI</span></p>
+    <p><strong>좌석 등급:</strong> <span id="previewSeatGrade">예: R석, 1 ~ R석, 8</span></p>
+    <p><strong>링크:</strong> <span id="firstUrlName">새창</span></p>
+    <a id ="firstUrl" href="" target="_blank" class="fixed-link-button">새 창으로 열기</a>
+    <a id ="reset" href="" class="fixed-link-button">리셋</a>
+</div>
     <script src="main.js"></script>
 
 </body>
