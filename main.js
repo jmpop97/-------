@@ -6,7 +6,7 @@
         
         const place = document.getElementById("place").value;
         const placeCode = place.split(' ').pop();
-
+        
         const newUrl = `https://poticket.interpark.com/Ticket/Seat/BookingSeatDetail.asp?GoodsCode=${goodsCode}&PlaceCode=${placeCode}&TmgsOrNot=D2003&LocOfImage=&Tiki=&BizCode=Webbr&PlaySeq=001&SessionId=&Block=001`;
         const openNewWindowButton = document.getElementById("firstUrl");
         const openNewWindowName = document.getElementById("firstUrlName");
@@ -40,6 +40,31 @@
             checkbox.value = checkbox.checked ? "Y" : "N";
         });
     }
+    function copyNewUrl() {
+        navigator.clipboard.writeText(ms1)
+    }
+    function stringJson(){
+        sj=`{"seatGrade":"1","floor":"1층","rowNo":"A열","seatNo":"5","blockNo":"001"},`
+        
+        return sj
+    }
+    function copyTile(){
+        tiles=[]
+        tileInit=document.getElementById("seatGradeStart")
+        tileEnd=document.getElementById("seatGradeEnd")
+        tileInitStruct=tileInit.value.split('"')
+        tileEndStruct=tileEnd.value.split('"')
+        for (i=tileInitStruct[15]*1;i<=tileEndStruct[15]*1;i++){
+            tileStruct=tileInitStruct
+            tileStruct[15]=i
+            console.log(tileStruct)
+            tile=tileStruct.join('"')
+            tiles.push(tile)
+        }
+        tiles=tiles.join("\n")
+        navigator.clipboard.writeText(tiles)
+    }
+
 }
 
 //input
@@ -76,8 +101,15 @@
     document.getElementById("seatGradeStart").addEventListener("input", updateSeatGradePreview);
     document.getElementById("seatGradeEnd").addEventListener("input", updateSeatGradePreview);
     
+    document.getElementById("title").addEventListener("input", function() {
+        massage1(this.value);
+    });
+
     document.getElementById("siteUrl").addEventListener("input", updateOpenNewWindowLink);
     document.getElementById("place").addEventListener("input", updateOpenNewWindowLink);
+    document.getElementById("copyButton").addEventListener("click", copyNewUrl);
+    document.getElementById("copyButton2").addEventListener("click", copyTile);
+
 }
 
 
@@ -89,4 +121,5 @@ checkids=["exclusive","openNotice"]
     }
     // 초기 로딩 시 링크 설정
 }
+
 updateOpenNewWindowLink();
