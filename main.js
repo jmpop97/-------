@@ -64,9 +64,54 @@
         tiles=tiles.join("\n")
         navigator.clipboard.writeText(tiles)
     }
-
+    function saveJson(){
+        var loc = window.location.pathname;
+        var dir = loc.substring(0, loc.lastIndexOf('/'));
+      
+        var file = new File(["foo"], dir + "/test.txt", {
+          type: "text/plain",
+        });
+      
+        var str = "My string of text";
+    }
+    //~~~~~~~~~~~~~~~~~~~
+    function setValue(id){
+        document.getElementById(id).value=datas[id]
+        
+    }
+    function setBool(id){
+        document.getElementById(id).checked=datas[id]
+    }
+    function setValues(){
+        value_ids=["exclusive","openNotice","openDate","eventPeriod","snsUrl","siteUrl","place","discount","seatGradeStart","seatGradeEnd","seatGradeEnd","title"]        
+        bool_ids=["exclusive","openNotice"]
+        for (i in value_ids){
+            setValue(value_ids[i])
+        }
+        for (i in bool_ids){
+            setBool(bool_ids[i])
+        }
+    }
+    function setInitList(initlist){
+        selector=document.getElementById("prefixSelector")
+        selector.innerHTML=''
+        const sel = document.createElement("select");
+        sel.id="selectFile"
+        for (i in initlist){
+            fileName=initlist[i]
+            
+            const opt = document.createElement("option");    
+            text=fileName.slice(0, -5)
+            opt.value = fileName;
+            opt.text = text;
+            sel.add(opt, null);
+        }
+        selector.appendChild(sel)
+        sel.addEventListener("change", function() {
+            getInit(document.getElementById("selectFile").value)
+        });
+    }
 }
-
 //input
 {
     document.getElementById("exclusive").addEventListener("input", function() {
@@ -104,12 +149,26 @@
     document.getElementById("title").addEventListener("input", function() {
         massage1(this.value);
     });
-
+    
     document.getElementById("siteUrl").addEventListener("input", updateOpenNewWindowLink);
     document.getElementById("place").addEventListener("input", updateOpenNewWindowLink);
     document.getElementById("copyButton").addEventListener("click", copyNewUrl);
     document.getElementById("copyButton2").addEventListener("click", copyTile);
-
+    document.getElementById("saveJson").addEventListener("click", function() {
+        const jsonData = { "test": "test" }; // 저장할 JSON 데이터
+        const jsonString = JSON.stringify(jsonData, null, 2); // JSON을 문자열로 변환
+        const blob = new Blob([jsonString], { type: "application/json" }); // Blob 생성
+        const url = URL.createObjectURL(blob); // 다운로드 링크 생성
+        
+        // 가상의 a 태그를 만들어서 클릭
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "test.json"; // 파일 이름 설정
+        a.click();
+        
+        // 사용이 끝난 URL 객체를 해제
+        URL.revokeObjectURL(url);
+    });
 }
 
 
@@ -123,3 +182,9 @@ checkids=["exclusive","openNotice"]
 }
 
 updateOpenNewWindowLink();
+//init
+{
+    getInitList()
+    setValues();
+}
+

@@ -81,9 +81,17 @@
 <body>
 
 <div class="container">
+
     <h1>공연 정보 입력</h1>
     
     <form id="ticketForm">
+        <div id ="prefixSelector">
+            <select id ="selectFile">
+                <option value="">-- 선택하세요 --</option>
+                <option value="hi">hi</option>
+                <option value="hello">hello</option>
+            </select>
+        </div>
         <div class="form-group">
             <label for="exclusive">인터파크 단독여부:</label>
             <input type="checkbox" id="exclusive" name="exclusive">
@@ -151,13 +159,16 @@
     <p><strong>할인:</strong> <span id="previewDiscount">default=BMBI</span></p>
     <p><strong>좌석 등급:</strong> <span id="previewSeatGrade">예: R석, 1 ~ R석, 8</span></p>
     <p><strong>링크:</strong> <span id="firstUrlName">새창</span></p>
+    <button id="saveJson">내용저장</button>
     <a id ="firstUrl" href="" target="_blank" class="fixed-link-button">새 창으로 열기</a>
     <a id ="reset" href="" class="fixed-link-button">리셋</a>
     <button id="copyButton" class="fixed-link-button" style="margin-top: 10px;">메세지 복사</button>
     <button id="copyButton2" class="fixed-link-button" style="margin-top: 10px;">타일 복사</button>
 </div>
+<script src="api.js"></script>
 <script src="env.js"></script>
-<script src="html.js"></script>
+<script src="form.js"></script>
+<script src="data.js"></script>
 <script src="main.js"></script>
 
 </body>
