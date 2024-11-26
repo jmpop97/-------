@@ -29,5 +29,22 @@ async function getInit(fileName){
     }).catch(error => {
         console.warn(error);
     });
+    putInits(data)
+    setValues()
+}
+
+async function saveInit(inits){
+    const url = "http://127.0.0.1:8080/saveInit";
+    data= await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(inits),
+    }).then(response => {
+        return response.text();
+    }).then(text => {
+        const data = JSON.parse(text);
+        return data
+    }).catch(error => {
+        console.warn(error);
+    });
     return data
 }

@@ -76,11 +76,12 @@
     }
     //~~~~~~~~~~~~~~~~~~~
     function setValue(id){
-        document.getElementById(id).value=datas[id]
+        console.log(inits)
+        document.getElementById(id).value=inits[id]
         
     }
     function setBool(id){
-        document.getElementById(id).checked=datas[id]
+        document.getElementById(id).checked=inits[id]
     }
     function setValues(){
         value_ids=["exclusive","openNotice","openDate","eventPeriod","snsUrl","siteUrl","place","discount","seatGradeStart","seatGradeEnd","seatGradeEnd","title"]        
@@ -90,6 +91,24 @@
         }
         for (i in bool_ids){
             setBool(bool_ids[i])
+        }
+    }
+    function putInits(data){
+        inits=data
+    }
+    function setInits(){
+        inits={
+            "exclusive":document.getElementById("exclusive").checked,
+            "openNotice" : document.getElementById("openNotice").checked,
+            "openDate" : document.getElementById("openDate").value,
+            "eventPeriod" : document.getElementById("eventPeriod").value,
+            "snsUrl" : document.getElementById("snsUrl").value,
+            "siteUrl" : document.getElementById("siteUrl").value,
+            "place" : document.getElementById("place").value,
+            "discount" : document.getElementById("discount").value,
+            "seatGradeStart" : document.getElementById("seatGradeStart").value,
+            "seatGradeEnd" : document.getElementById("seatGradeEnd").value,
+            "title" :document.getElementById("title").value,
         }
     }
     function setInitList(initlist){
@@ -155,19 +174,8 @@
     document.getElementById("copyButton").addEventListener("click", copyNewUrl);
     document.getElementById("copyButton2").addEventListener("click", copyTile);
     document.getElementById("saveJson").addEventListener("click", function() {
-        const jsonData = { "test": "test" }; // 저장할 JSON 데이터
-        const jsonString = JSON.stringify(jsonData, null, 2); // JSON을 문자열로 변환
-        const blob = new Blob([jsonString], { type: "application/json" }); // Blob 생성
-        const url = URL.createObjectURL(blob); // 다운로드 링크 생성
-        
-        // 가상의 a 태그를 만들어서 클릭
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "test.json"; // 파일 이름 설정
-        a.click();
-        
-        // 사용이 끝난 URL 객체를 해제
-        URL.revokeObjectURL(url);
+        setInits()
+        saveInit(inits)
     });
 }
 

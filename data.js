@@ -1,5 +1,5 @@
 
-datas={
+inits={
     exclusive:false,
     openNotice : false,
     openDate : "",

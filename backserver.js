@@ -22,20 +22,29 @@ server.listen(8080, function(){
 });
 
 function saveJson(request,res){
-    test={
-      "test":"hi",
-      "test2":"hi2"
-  }
-  let json = JSON.stringify(test,null,2);
-  try {
-      fs.writeFileSync("test.json", json);
-      console.log('JSON data saved to file successfully.');
-    } catch (error) {
-      console.error('Error writing JSON data to file:', error);
-    }
-  res.setHeader('Content-Type', 'application/json charset=utf-8')
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.end(JSON.stringify(test))
+  var body = ''
+  request.on('data', function(data) {
+    body += data
+  })
+  request.on('end', function() {
+    console.log('Body: ' + body)
+    body=JSON.parse(body)
+    let json = JSON.stringify(body,null,2);
+    
+    try {
+        fs.writeFileSync("./initData/"+body.title+".json", json);
+        console.log('JSON data saved to file successfully.');
+      } catch (error) {
+        console.error('Error writing JSON data to file:', error);
+      }
+
+    res.setHeader('Content-Type', 'application/json charset=utf-8')
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end("hi")
+  })
+
+
+
 }
 
 function initList(request,res){
@@ -55,10 +64,10 @@ function loadInit(request,res){
   request.on('end', function() {
     console.log('Body: ' + body)
     body=JSON.parse(body)
-    console.log(body.fileName)
     const jsonFile = fs.readFileSync('./InitData/'+body.fileName, 'utf8');
     res.setHeader('Content-Type', 'application/json charset=utf-8')
     res.setHeader("Access-Control-Allow-Origin", "*");
+    console.log(jsonFile)
     res.end(jsonFile)
   })
 }
