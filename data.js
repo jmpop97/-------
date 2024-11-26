@@ -12,5 +12,3 @@ inits={
     seatGradeEnd : "",
     title : "",
 }
-
-ms1=massage1("")

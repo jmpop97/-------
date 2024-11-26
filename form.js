@@ -17,3 +17,10 @@ function massage1(goodsName){
     `
     return ms1
 }
+function seatImgUrl(){
+    setInits()
+    goodsCode =inits["siteUrl"].split('/').pop()
+    placeCode=inits["place"].split(' ').pop()
+    first_url="https://poticket.interpark.com/Ticket/Seat/BookingSeatDetail.asp?GoodsCode="+goodsCode+"&PlaceCode="+placeCode+"&TmgsOrNot=D2003&LocOfImage=&Tiki=&BizCode=Webbr&PlaySeq=001&SessionId=&Block=001"
+    return first_url
+}
