@@ -85,7 +85,7 @@
             "seatGradeStart" : document.getElementById("seatGradeStart").value,
             "seatGradeEnd" : document.getElementById("seatGradeEnd").value,
             "title" :document.getElementById("title").value,
-            "users" :document.getElementById("users").value
+            "users" :document.getElementById("users").value,
         }
     }
     function setInitList(initlist){
@@ -121,9 +121,13 @@
         for (i in users){
             user=users[i]
             for (key in user){
-                if (key=="playDateTime" | key=="siteLoginInfo"){
+                if (key=="playDateTime" ){
                     copyString+='"#'+key+'" : "'+user[key]+'"\n'
                 }
+                if (key=="siteLoginInfo"){
+                    copyString+='"#'+key+'" : "'+user[key]+'"\n\n'
+                }
+
             }
         }
         // copyString=copyString.slice(0,-2)

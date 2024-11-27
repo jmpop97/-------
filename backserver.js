@@ -31,6 +31,7 @@ function saveJson(request,res){
   request.on('end', function() {
     body=JSON.parse(body)
     let json = JSON.stringify(body,null,2);
+    console.log(json)
     let today = new Date();   
     today=today.toLocaleDateString()
     today=today.split('/').join('')
