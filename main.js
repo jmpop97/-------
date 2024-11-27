@@ -85,6 +85,7 @@
             "seatGradeStart" : document.getElementById("seatGradeStart").value,
             "seatGradeEnd" : document.getElementById("seatGradeEnd").value,
             "title" :document.getElementById("title").value,
+            "users" :document.getElementById("users").value
         }
     }
     function setInitList(initlist){
@@ -106,6 +107,13 @@
             getInit(document.getElementById("selectFile").value)
         });
     }
+    function settingUsers(){
+        user=inits["users"]
+        users=JSON.parse(user)
+        for (i in users){
+            console.log(users[i])
+        }
+    }
 }
 //input
 {
@@ -113,10 +121,11 @@
         setInits()
         saveInit(inits)
         getInitList()
+        settingUsers()
     });
     document.getElementById("firstUrl").addEventListener("click", function() {
     firsturl=seatImgUrl()
-    window.open(firsturl)
+    window.open(firsturl,'_blank')
     })
     document.getElementById("Message").addEventListener("click", copyNewUrl);
     document.getElementById("tiles").addEventListener("click", copyTile);

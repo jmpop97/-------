@@ -1,5 +1,7 @@
+let exec = require('child_process').exec
 var http = require('http'); 
 const fs = require('fs');
+
 var initList
 var server = http.createServer(function(request,res){ 
   url=request.url
@@ -50,6 +52,8 @@ function saveJson(request,res){
 }
 
 function initList(request,res){
+  spawnTest()
+  console.log("spawnTest")
   dir="./InitData"
   filelists=fs.readdirSync(dir)
   res.setHeader('Content-Type', 'application/json charset=utf-8')
@@ -63,6 +67,7 @@ function loadInit(request,res){
     body += data
   })
   request.on('end', function() {
+
     body=JSON.parse(body)
     const jsonFile = fs.readFileSync('./InitData/'+body.fileName, 'utf8');
     res.setHeader('Content-Type', 'application/json charset=utf-8')
@@ -70,3 +75,10 @@ function loadInit(request,res){
     res.end(jsonFile)
   })
 }
+
+
+function spawnTest() {
+  exec('ls -al', (err,out,stderr) => { 
+    console.log(out)
+  });
+ }
