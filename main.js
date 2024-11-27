@@ -120,6 +120,11 @@
     })
     document.getElementById("Message").addEventListener("click", copyNewUrl);
     document.getElementById("tiles").addEventListener("click", copyTile);
+    document.getElementById("reset").addEventListener("click", function() {
+        setInits()
+        saveInit(inits)
+        getInitList()
+    });
 }
 
 

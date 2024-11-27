@@ -54,7 +54,7 @@ function initList(request,res){
   filelists=fs.readdirSync(dir)
   res.setHeader('Content-Type', 'application/json charset=utf-8')
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.end(JSON.stringify(filelists))
+  res.end(JSON.stringify(filelists.reverse()))
 }
 
 function loadInit(request,res){
