@@ -52,7 +52,6 @@ function saveJson(request,res){
 }
 
 function initList(request,res){
-  spawnTest()
   console.log("spawnTest")
   dir="./InitData"
   filelists=fs.readdirSync(dir)

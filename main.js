@@ -114,6 +114,21 @@
             console.log(users[i])
         }
     }
+    function copyUser(){
+        user=document.getElementById("users").value
+        users=JSON.parse(user)
+        copyString=""
+        for (i in users){
+            user=users[i]
+            for (key in user){
+                if (key=="playDateTime" | key=="siteLoginInfo"){
+                    copyString+='"#'+key+'" : "'+user[key]+'"\n'
+                }
+            }
+        }
+        // copyString=copyString.slice(0,-2)
+        navigator.clipboard.writeText(copyString)
+    }
 }
 //input
 {
@@ -121,7 +136,7 @@
         setInits()
         saveInit(inits)
         getInitList()
-        settingUsers()
+        
     });
     document.getElementById("firstUrl").addEventListener("click", function() {
     firsturl=seatImgUrl()
@@ -129,6 +144,7 @@
     })
     document.getElementById("Message").addEventListener("click", copyNewUrl);
     document.getElementById("tiles").addEventListener("click", copyTile);
+    document.getElementById("copyUserDatas").addEventListener("click", copyUser);
     document.getElementById("reset").addEventListener("click", function() {
         setInits()
         saveInit(inits)
