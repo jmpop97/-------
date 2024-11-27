@@ -1,7 +1,5 @@
 function massage1(goodsName){
     ms1=`
-    ----------------------------------
-    
     안녕하세요! "${nickname}"입니다.
     
     이번 [${goodsName}]
@@ -11,9 +9,6 @@ function massage1(goodsName){
     
     좋은티켓 드리기위해
     최선을 다하겠습니다.
-    
-    ${phone}
-    ----------------------------------
     `
     return ms1
 }
