@@ -85,12 +85,15 @@
     <h1>공연 정보 입력</h1>
     
     <form id="ticketForm">
+        
         <div id ="prefixSelector">
             <select id ="selectFile">
                 <option value="">-- 선택하세요 --</option>
-                <option value="hi">hi</option>
-                <option value="hello">hello</option>
             </select>
+        </div>
+        <div class="form-group">
+            <label for="siteUrl">사이트 주소:</label>
+            <input type="text" id="siteUrl" name="siteUrl"required>
         </div>
         <div class="form-group">
             <label for="exclusive">인터파크 단독여부:</label>
@@ -116,12 +119,7 @@
             <label for="snsUrl">SNS 주소:</label>
             <input type="text" id="snsUrl" name="snsUrl" >
         </div>
-        
-        <div class="form-group">
-            <label for="siteUrl">사이트 주소:</label>
-            <input type="text" id="siteUrl" name="siteUrl"required>
-        </div>
-        
+                
         <div class="form-group">
             <label for="place">장소 (Place):</label>
             <input type="text" id="place" name="place" required>
@@ -129,6 +127,11 @@
         
         <div class="form-group">
             <label for="discount">할인:</label>
+            <div id ="discountSelecter">
+                <select id ="discountSelect">
+                    <option value="">-- 선택하세요 --</option>
+                </select>
+            </div>
             <input type="text" id="discount" name="discount"  required>
         </div>
         
@@ -152,12 +155,14 @@
 </div>
 
 <div class="preview">
-    <button id="saveJson">내용저장</button>
-    <a id ="firstUrl" href="" target="_blank" class="fixed-link-button">새 창으로 열기</a>
-    
+    <button id="saveJson"class="fixed-link-button">내용저장</button>
+    <button id="loadProductData"class="fixed-link-button">상품 정보 불러오기</button>
+    <a id ="firstUrl" href="" target="_blank" class="fixed-link-button">좌석 이미지 열기</a>
     <button id="Message" class="fixed-link-button" style="margin-top: 10px;">메세지 복사</button>
     <button id="tiles" class="fixed-link-button" style="margin-top: 10px;">타일 복사</button>
     <button id="copyUserDatas" class="fixed-link-button" style="margin-top: 10px;">유저 # 복사</button>
+
+    
     <!-- <a id ="recipeBMBI" class="fixed-link-button">레시피BMBI</a> -->
     <a id ="reset" href="" class="fixed-link-button">리셋</a>
     

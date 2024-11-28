@@ -11,4 +11,6 @@ inits={
     seatGradeStart : "",
     seatGradeEnd : "",
     title : "",
+    users:""
 }
+productId=""

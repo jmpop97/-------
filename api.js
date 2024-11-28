@@ -48,3 +48,21 @@ async function saveInit(inits){
     });
     return data
 }
+
+async function getProductData(id){
+    const url = "http://127.0.0.1:8080/productData";
+    data= await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+            id: id,
+          }),
+    }).then(response => {
+        return response.text();
+    }).then(text => {
+        const data = JSON.parse(text);
+        return data
+    }).catch(error => {
+        console.warn(error);
+    });
+    putProductId(data)
+}

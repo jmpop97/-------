@@ -1,3 +1,5 @@
+value_ids=["exclusive","openNotice","openDate","eventPeriod","snsUrl","siteUrl","place","discount","seatGradeStart","seatGradeEnd","seatGradeEnd","title","users"]        
+bool_ids=["exclusive","openNotice"]
 {
     function updateSeatGradePreview() {
         const start = document.getElementById("seatGradeStart").value;
@@ -51,6 +53,25 @@
         tiles=tiles.join("\n")
         navigator.clipboard.writeText(tiles)
     }
+    function copyUser(){
+        user=document.getElementById("users").value
+        users=JSON.parse(user)
+        copyString=""
+        for (i in users){
+            user=users[i]
+            for (key in user){
+                if (key=="playDateTime" ){
+                    copyString+='      "#'+key+'" : "'+user[key]+'",\n'
+                }
+                if (key=="siteLoginInfo"){
+                    copyString+='"#'+key+'" : "'+user[key]+'"\n\n'
+                }
+
+            }
+        }
+        // copyString=copyString.slice(0,-2)
+        navigator.clipboard.writeText(copyString)
+    }
     //~~~~~~~~~~~~~~~~~~~
     function setValue(id){
         document.getElementById(id).value=inits[id]
@@ -60,8 +81,7 @@
         document.getElementById(id).checked=inits[id]
     }
     function setValues(){
-        value_ids=["exclusive","openNotice","openDate","eventPeriod","snsUrl","siteUrl","place","discount","seatGradeStart","seatGradeEnd","seatGradeEnd","title"]        
-        bool_ids=["exclusive","openNotice"]
+       
         for (i in value_ids){
             setValue(value_ids[i])
         }
@@ -114,46 +134,43 @@
             console.log(users[i])
         }
     }
-    function copyUser(){
-        user=document.getElementById("users").value
-        users=JSON.parse(user)
-        copyString=""
-        for (i in users){
-            user=users[i]
-            for (key in user){
-                if (key=="playDateTime" ){
-                    copyString+='"#'+key+'" : "'+user[key]+'"\n'
-                }
-                if (key=="siteLoginInfo"){
-                    copyString+='"#'+key+'" : "'+user[key]+'"\n\n'
-                }
 
-            }
+    function settingInit(){
+        setInits()
+        saveInit(inits)
+        getInitList()
+    }
+    function openLink(){
+        firsturl=seatImgUrl()
+        window.open(firsturl,'_blank')
+    }
+    function loadProductData(){
+        settingProductId()
+        getProductData(productId)
+    }
+    function settingProductId(){
+        productId=document.getElementById("siteUrl").value
+        var regex = /[^0-9]/g;
+        productId = productId.replace(regex, "");
+    }
+    function putProductId(datas){
+        if (datas["specialSeatingName"]=="단독판매"){
+            document.getElementById("exclusive").checked=true
         }
-        // copyString=copyString.slice(0,-2)
-        navigator.clipboard.writeText(copyString)
+        document.getElementById("title").value = datas["goodsName"]
+        document.getElementById("place").value = datas["placeName"] + ', '+datas["placeCode"]
+
     }
 }
 //input
 {
-    document.getElementById("saveJson").addEventListener("click", function() {
-        setInits()
-        saveInit(inits)
-        getInitList()
-        
-    });
-    document.getElementById("firstUrl").addEventListener("click", function() {
-    firsturl=seatImgUrl()
-    window.open(firsturl,'_blank')
-    })
+    document.getElementById("saveJson").addEventListener("click",settingInit);
+    document.getElementById("loadProductData").addEventListener("click",loadProductData);
+    document.getElementById("firstUrl").addEventListener("click", openLink)
     document.getElementById("Message").addEventListener("click", copyNewUrl);
     document.getElementById("tiles").addEventListener("click", copyTile);
     document.getElementById("copyUserDatas").addEventListener("click", copyUser);
-    document.getElementById("reset").addEventListener("click", function() {
-        setInits()
-        saveInit(inits)
-        getInitList()
-    });
+    document.getElementById("reset").addEventListener("click",settingInit);
 }
 
 
@@ -169,6 +186,7 @@ checkids=["exclusive","openNotice"]
 //init
 function setting(){
     getInitList()
+    
     setValues();
 }
 setting()
