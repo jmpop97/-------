@@ -64,7 +64,7 @@ bool_ids=["exclusive","openNotice"]
                     copyString+='      "#'+key+'" : "'+user[key]+'",\n'
                 }
                 if (key=="siteLoginInfo"){
-                    copyString+='"#'+key+'" : "'+user[key]+'"\n\n'
+                    copyString+='      "#'+key+'" : "'+user[key]+'",\n\n'
                 }
 
             }
