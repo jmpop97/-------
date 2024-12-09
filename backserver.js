@@ -6,6 +6,7 @@ const { disconnect } = require('process');
 var cheerio = require('cheerio');
 var request = require('request');
 var iconv = require("iconv-lite");
+const { encode } = require('punycode');
 
 var initList
 var server = http.createServer(function(request,res){ 
@@ -148,15 +149,28 @@ function fetchJson(options) {
       });
   });
 }
-function fetchHtml(option, callback) {
-  request(url, (error, response, body) => {
-      if (option) {
-          return callback(error, null);
-      }
-      if (response.statusCode !== 200) {
-          return callback(new Error(`HTTP 상태 코드: ${response.statusCode}`), null);
-      }
-      callback(null, body); // 데이터를 콜백으로 전달
+function fetchHtml(options) {
+  return new Promise((resolve, reject) => {
+      https.get(options, (res) => {
+          let data = '';
+
+          // 데이터 수신 중
+          res.setEncoding(null);
+          res.on('data', (chunk) => {
+              data += chunk;
+          });
+
+          // 응답 완료
+          res.on('end', () => {
+              try {
+                  resolve(data);
+              } catch (err) {
+                  reject(new Error(`Failed to parse JSON from  ${err.message}`));
+              }
+          });
+      }).on('error', (err) => {
+          reject(new Error(`Failed to fetch data from  ${err.message}`));
+      });
   });
 }
 async function getSiteSummary(id){
@@ -233,20 +247,7 @@ async function scheduleInfo(id){
     hostname: 'ticket.interpark.com',
     path: '/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=%C0%CC%C1%D8%C8%A3&no=53614&groupno=53614&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate',
     method: 'GET',
-    headers: {
-      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-      'accept-language': 'ko-KR,ko;q=0.9',
-      'priority': 'u=0, i',
-      'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-      'sec-ch-ua-mobile': '?0',
-      'sec-ch-ua-platform': '"macOS"',
-      'sec-fetch-dest': 'document',
-      'sec-fetch-mode': 'navigate',
-      'sec-fetch-site': 'none',
-      'sec-fetch-user': '?1',
-      'upgrade-insecure-requests': '1',
-      'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
-  }
+    encoding:null
   };
   const datas = await fetchHtml(options, (error, data) => {
     if (error) {
@@ -273,6 +274,21 @@ async function scheduleInfo2(id){
     })
   });
 }
+async function scheduleInfo3(id){
+  url="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=%C0%CC%C1%D8%C8%A3&no=53614&groupno=53614&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
+  const res = await fetch(url)
+    buff= await res.arrayBuffer();
+    const decoder = new TextDecoder('euc-kr'); //utf-8로도 바꿔보고.., euc-kr로도 바꿔보고..
+    const text = decoder.decode(buff);
+    
+    var $ = cheerio.load(text);
+    $infos =$('.info').children("ul").children("li")
+
+    var openInfo=[]
+    $infos.each(function(){
+      console.log($(this).text())
+    })
+}
 // getSiteSummary()
 // getSitePriceGroup(24016737)
 
@@ -288,4 +304,6 @@ let today = new Date();
 // dates=[year,month,date,day]
 return today.toLocaleDateString('ko-KR')
 }
-scheduleInfo()
+
+
+scheduleInfo3()
