@@ -146,6 +146,10 @@ bool_ids=["exclusive","openNotice"]
         firsturl=seatImgUrl()
         window.open(firsturl,'_blank')
     }
+    function loadAlertData(){
+        settingAlertUrl()
+        getAlertData(alertUrl)
+    }
     function loadProductData(){
         settingProductId()
         getProductData(productId)
@@ -155,6 +159,9 @@ bool_ids=["exclusive","openNotice"]
         productId=document.getElementById("siteUrl").value
         var regex = /[^0-9]/g;
         productId = productId.replace(regex, "");
+    }
+    function settingAlertUrl(){
+        alertUrl=document.getElementById("notificationUrl").value
     }
     function putProductId(datas){
         if (datas["specialSeatingName"]=="단독판매"){
@@ -174,13 +181,28 @@ bool_ids=["exclusive","openNotice"]
             opt.text = text;
             sel.add(opt, null);
         }
-        
+    }
 
+    function settingAlertData(data){
+        const sel = document.getElementById("openTimeSelect");
+        sel.addEventListener("change",function(){
+            value=document.getElementById("openTimeSelect").value
+            document.getElementById("eventPeriod").value=value
+        })
+        for (key in data){
+            const opt = document.createElement("option");
+            value =data[key]
+            text=key+" | "+value
+            opt.value = value;
+            opt.text = text;
+            sel.add(opt, null);
+        }
     }
 }
 //input
 {
     document.getElementById("saveJson").addEventListener("click",settingInit);
+    document.getElementById("loadAlertData").addEventListener("click",loadAlertData);
     document.getElementById("loadProductData").addEventListener("click",loadProductData);
     document.getElementById("firstUrl").addEventListener("click", openLink)
     document.getElementById("Message").addEventListener("click", copyNewUrl);

@@ -14,3 +14,4 @@ inits={
     users:""
 }
 productId=""
+alertUrl=""

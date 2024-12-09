@@ -84,3 +84,21 @@ async function getDiscountData(id){
     console.log(data)
     settingDiscount(data)
 }
+async function getAlertData(alertUrl){
+    const url = "http://127.0.0.1:8080/alertData";
+    data= await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+            url: alertUrl,
+          }),
+    }).then(response => {
+        return response.text();
+    }).then(text => {
+        const data = JSON.parse(text);
+        return data
+    }).catch(error => {
+        console.warn(error);
+    });
+    console.log(data)
+    settingAlertData(data)
+}

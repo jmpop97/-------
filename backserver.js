@@ -2,11 +2,7 @@ let exec = require('child_process').exec
 var http = require('http'); 
 var https = require('https'); 
 const fs = require('fs');
-const { disconnect } = require('process');
 var cheerio = require('cheerio');
-var request = require('request');
-var iconv = require("iconv-lite");
-const { encode } = require('punycode');
 
 var initList
 var server = http.createServer(function(request,res){ 
@@ -21,6 +17,8 @@ var server = http.createServer(function(request,res){
     productData(request,res)
   }else if(url == "/discountData"){
     discountData(request,res)
+  }else if(url == "/alertData"){
+    alertData(request,res)
   }
   
 });
@@ -113,6 +111,20 @@ function discountData(request,res){
     res.end(JSON.stringify(result))
   })
 }
+function alertData(request,res){
+  var body = ''
+  request.on('data', function(data) {
+    body += data
+  })
+  request.on('end', async function() {
+    body=JSON.parse(body)
+    result = await scheduleInfo(body.url)
+    
+    res.setHeader('Content-Type', 'application/json charset=utf-8')
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify(result))
+  })
+}
 
 //~~~~~~~~~~~~~~~~터미널~~~~~~~~~~~~~
 function spawnTest() {
@@ -141,38 +153,15 @@ function fetchJson(options) {
                   const jsonData = JSON.parse(data);
                   resolve(jsonData);
               } catch (err) {
-                  reject(new Error(`Failed to parse JSON from  ${err.message}`));
+                  
               }
           });
       }).on('error', (err) => {
-          reject(new Error(`Failed to fetch data from  ${err.message}`));
+          
       });
   });
 }
-function fetchHtml(options) {
-  return new Promise((resolve, reject) => {
-      https.get(options, (res) => {
-          let data = '';
 
-          // 데이터 수신 중
-          res.setEncoding(null);
-          res.on('data', (chunk) => {
-              data += chunk;
-          });
-
-          // 응답 완료
-          res.on('end', () => {
-              try {
-                  resolve(data);
-              } catch (err) {
-                  reject(new Error(`Failed to parse JSON from  ${err.message}`));
-              }
-          });
-      }).on('error', (err) => {
-          reject(new Error(`Failed to fetch data from  ${err.message}`));
-      });
-  });
-}
 async function getSiteSummary(id){
   const options = {
     hostname: 'api-ticketfront.interpark.com',
@@ -242,52 +231,27 @@ async function getSitePriceGroup(id){
   }
   return result
 }
-async function scheduleInfo(id){
-  const options = {
-    hostname: 'ticket.interpark.com',
-    path: '/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=%C0%CC%C1%D8%C8%A3&no=53614&groupno=53614&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate',
-    method: 'GET',
-    encoding:null
-  };
-  const datas = await fetchHtml(options, (error, data) => {
-    if (error) {
-        console.error('요청 실패:', error);
-    } else {
-        console.log('받은 데이터:', data);
-    }
-});
-
-  data=iconv.encode(datas, 'utf8');
-  data=iconv.decode(datas, 'euc-kr');
-  console.log("work",data)
-}
-async function scheduleInfo2(id){
-  url="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=%C0%CC%C1%D8%C8%A3&no=53614&groupno=53614&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
-  html=request({url,encoding:null}, function(error, response, html){
-    if (error) {throw error};
-    const content = iconv.decode(html, 'euc-kr');
-    var $ = cheerio.load(content);
-
-    $infos =$('.info').children("ul").children("li")
-    $infos.each(function(){
-      console.log($(this).text())
-    })
-  });
-}
-async function scheduleInfo3(id){
-  url="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=%C0%CC%C1%D8%C8%A3&no=53614&groupno=53614&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
+async function scheduleInfo(url){
   const res = await fetch(url)
     buff= await res.arrayBuffer();
     const decoder = new TextDecoder('euc-kr'); //utf-8로도 바꿔보고.., euc-kr로도 바꿔보고..
     const text = decoder.decode(buff);
     
     var $ = cheerio.load(text);
-    $infos =$('.info').children("ul").children("li")
+    
+    $goods =$('.btn')
+    console.log($goods.value)
 
-    var openInfo=[]
+
+    $infos =$('.info').children("ul").children("li")
+    var openInfo={}
     $infos.each(function(){
-      console.log($(this).text())
+      str=$(this).text()
+      type=str.substring(0,str.length-22)
+      value=str.substr(-22)
+      openInfo[type]=value
     })
+    return openInfo
 }
 // getSiteSummary()
 // getSitePriceGroup(24016737)
@@ -304,6 +268,5 @@ let today = new Date();
 // dates=[year,month,date,day]
 return today.toLocaleDateString('ko-KR')
 }
-
-
-scheduleInfo3()
+test="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=%C0%CC%C1%D8%C8%A3&no=53614&groupno=53614&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
+scheduleInfo(test)

@@ -132,6 +132,11 @@
         
         <div class="form-group">
             <label for="eventPeriod">티켓오픈 공연기간:</label>
+            <div id ="openTime">
+                <select id ="openTimeSelect">
+                    <option value="">-- 선택하세요 --</option>
+                </select>
+            </div>
             <input type="text" id="eventPeriod" name="eventPeriod"required>
         </div>
         
@@ -161,6 +166,7 @@
 
 <div class="preview">
     <button id="saveJson"class="fixed-link-button">내용저장</button>
+    <button id="loadAlertData"class="fixed-link-button">공지 정보 불러오기</button>
     <button id="loadProductData"class="fixed-link-button">상품 정보 불러오기</button>
     <a id ="firstUrl" href="" target="_blank" class="fixed-link-button">좌석 이미지 열기</a>
     <button id="Message" class="fixed-link-button" style="margin-top: 10px;">메세지 복사</button>
