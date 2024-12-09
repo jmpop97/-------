@@ -3,6 +3,9 @@ var http = require('http');
 var https = require('https'); 
 const fs = require('fs');
 const { disconnect } = require('process');
+var cheerio = require('cheerio');
+var request = require('request');
+var iconv = require("iconv-lite");
 
 var initList
 var server = http.createServer(function(request,res){ 
@@ -15,6 +18,8 @@ var server = http.createServer(function(request,res){
     loadInit(request,res)
   }else if(url == "/productData"){
     productData(request,res)
+  }else if(url == "/discountData"){
+    discountData(request,res)
   }
   
 });
@@ -36,11 +41,10 @@ function saveJson(request,res){
   request.on('end', function() {
     body=JSON.parse(body)
     let json = JSON.stringify(body,null,2);
-    console.log(json)
-    let today = new Date();   
-    today=today.toLocaleDateString()
-    today=today.split('/').join('')
-    today = today.substr(2)
+    let today = getDate()
+    today=today.replaceAll(".","_")
+    today=today.replaceAll(" ","")
+    console.log(today)
     path="./initData/"+today+" - "+body.title+".json"
     try {
         fs.writeFileSync(path, json);
@@ -58,7 +62,6 @@ function saveJson(request,res){
 }
 
 function initList(request,res){
-  console.log("spawnTest")
   dir="./InitData"
   filelists=fs.readdirSync(dir)
   res.setHeader('Content-Type', 'application/json charset=utf-8')
@@ -87,7 +90,22 @@ function productData(request,res){
   })
   request.on('end', async function() {
     body=JSON.parse(body)
+    console.log(body.id)
     result = await getSiteSummary(body.id)
+    
+    res.setHeader('Content-Type', 'application/json charset=utf-8')
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify(result))
+  })
+}
+function discountData(request,res){
+  var body = ''
+  request.on('data', function(data) {
+    body += data
+  })
+  request.on('end', async function() {
+    body=JSON.parse(body)
+    result = await getSitePriceGroup(body.id)
     
     res.setHeader('Content-Type', 'application/json charset=utf-8')
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -130,8 +148,18 @@ function fetchJson(options) {
       });
   });
 }
+function fetchHtml(option, callback) {
+  request(url, (error, response, body) => {
+      if (option) {
+          return callback(error, null);
+      }
+      if (response.statusCode !== 200) {
+          return callback(new Error(`HTTP 상태 코드: ${response.statusCode}`), null);
+      }
+      callback(null, body); // 데이터를 콜백으로 전달
+  });
+}
 async function getSiteSummary(id){
-  console.log("summary",id)
   const options = {
     hostname: 'api-ticketfront.interpark.com',
     path: '/v1/goods/'+id+'/summary?goodsCode=24016412&priceGrade=&seatGrade=',
@@ -152,7 +180,6 @@ async function getSiteSummary(id){
     }
   }; 
   const datas= await fetchJson(options)
-  console.log(datas)
   data=datas["data"]
   goodsName=data["goodsName"]
   placeName=data["placeName"]
@@ -165,10 +192,10 @@ async function getSiteSummary(id){
     specialSeatingName
   }
 }
-async function getSitePriceGroup(){
+async function getSitePriceGroup(id){
   const options = {
     hostname: 'api-ticketfront.interpark.com',
-    path: '/v1/goods/24016412/prices/group',
+    path: '/v1/goods/'+id+'/prices/group',
     method: 'GET',
     headers: {
       'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -186,17 +213,79 @@ async function getSitePriceGroup(){
   }
   };
   const datas= await fetchJson(options)
-  for (seats in datas){
-    seats=datas[seats]
+  result={}
+  i=0
+  for (seatsName in datas){
+    seats=datas[seatsName]
     for (discounts in seats){
       discounts=seats[discounts]
-      for(i in discounts){
-        discount=discounts[i]
-        console.log(discount["seatGradeName"],discount["priceGradeName"],discount["salesPrice"])
+      for(discountsN in discounts){
+        discount=discounts[discountsN]
+        result[i]=[discount["seatGradeName"],discount["priceGradeName"],discount["salesPrice"]]
+        i++
       }
     }
   }
+  return result
+}
+async function scheduleInfo(id){
+  const options = {
+    hostname: 'ticket.interpark.com',
+    path: '/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=%C0%CC%C1%D8%C8%A3&no=53614&groupno=53614&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate',
+    method: 'GET',
+    headers: {
+      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+      'accept-language': 'ko-KR,ko;q=0.9',
+      'priority': 'u=0, i',
+      'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+      'sec-ch-ua-mobile': '?0',
+      'sec-ch-ua-platform': '"macOS"',
+      'sec-fetch-dest': 'document',
+      'sec-fetch-mode': 'navigate',
+      'sec-fetch-site': 'none',
+      'sec-fetch-user': '?1',
+      'upgrade-insecure-requests': '1',
+      'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+  }
+  };
+  const datas = await fetchHtml(options, (error, data) => {
+    if (error) {
+        console.error('요청 실패:', error);
+    } else {
+        console.log('받은 데이터:', data);
+    }
+});
 
+  data=iconv.encode(datas, 'utf8');
+  data=iconv.decode(datas, 'euc-kr');
+  console.log("work",data)
+}
+async function scheduleInfo2(id){
+  url="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=%C0%CC%C1%D8%C8%A3&no=53614&groupno=53614&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
+  html=request({url,encoding:null}, function(error, response, html){
+    if (error) {throw error};
+    const content = iconv.decode(html, 'euc-kr');
+    var $ = cheerio.load(content);
+
+    $infos =$('.info').children("ul").children("li")
+    $infos.each(function(){
+      console.log($(this).text())
+    })
+  });
 }
 // getSiteSummary()
-getSitePriceGroup()
+// getSitePriceGroup(24016737)
+
+
+//~~~~~~~~~Util~~~~
+function getDate(){
+let today = new Date();   
+
+// let year = today.getFullYear(); // 년도
+// let month = today.getMonth() + 1;  // 월
+// let date = today.getDate();  // 날짜
+// let day = today.getDay();  // 요일
+// dates=[year,month,date,day]
+return today.toLocaleDateString('ko-KR')
+}
+scheduleInfo()

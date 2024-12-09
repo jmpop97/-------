@@ -92,14 +92,34 @@
             </select>
         </div>
         <div class="form-group">
+            <label for="notificationUrl">공지 주소:</label>
+            <input type="text" id="notificationUrl" name="notificationUrl"required>
+        </div>
+        <div class="form-group">
             <label for="siteUrl">사이트 주소:</label>
             <input type="text" id="siteUrl" name="siteUrl"required>
+        </div>
+        <div class="form-group">
+            <label for="title">공연 이름</label>
+            <input type="text" id="title" name="seatGradeEnd"  required>
+        </div>
+        <div class="form-group">
+            <label for="place">장소 (Place):</label>
+            <input type="text" id="place" name="place" required>
         </div>
         <div class="form-group">
             <label for="exclusive">인터파크 단독여부:</label>
             <input type="checkbox" id="exclusive" name="exclusive">
         </div>
-        
+        <div class="form-group">
+            <label for="discount">할인:</label>
+            <div id ="discountSelecter">
+                <select id ="discountSelect">
+                    <option value="">-- 선택하세요 --</option>
+                </select>
+            </div>
+            <input type="text" id="discount" name="discount"  required>
+        </div>
         <div class="form-group">
             <label for="openNotice">티켓 오픈 공지여부:</label>
             <input type="checkbox" id="openNotice" name="openNotice">
@@ -120,20 +140,9 @@
             <input type="text" id="snsUrl" name="snsUrl" >
         </div>
                 
-        <div class="form-group">
-            <label for="place">장소 (Place):</label>
-            <input type="text" id="place" name="place" required>
-        </div>
+
         
-        <div class="form-group">
-            <label for="discount">할인:</label>
-            <div id ="discountSelecter">
-                <select id ="discountSelect">
-                    <option value="">-- 선택하세요 --</option>
-                </select>
-            </div>
-            <input type="text" id="discount" name="discount"  required>
-        </div>
+
         
         <div class="form-group">
             <label for="seatGradeStart">좌석 등급 시작:</label>
@@ -142,10 +151,6 @@
         <div class="form-group">
             <label for="seatGradeEnd">좌석 등급 끝:</label>
             <input type="text" id="seatGradeEnd" name="seatGradeEnd"  required>
-        </div>
-        <div class="form-group">
-            <label for="title">공연 이름</label>
-            <input type="text" id="title" name="seatGradeEnd"  required>
         </div>
         <div class="form-group">
             <label for="users">유저정보</label>

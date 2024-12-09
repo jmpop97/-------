@@ -66,3 +66,21 @@ async function getProductData(id){
     });
     putProductId(data)
 }
+async function getDiscountData(id){
+    const url = "http://127.0.0.1:8080/discountData";
+    data= await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+            id: id,
+          }),
+    }).then(response => {
+        return response.text();
+    }).then(text => {
+        const data = JSON.parse(text);
+        return data
+    }).catch(error => {
+        console.warn(error);
+    });
+    console.log(data)
+    settingDiscount(data)
+}

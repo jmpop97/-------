@@ -48,7 +48,9 @@ bool_ids=["exclusive","openNotice"]
             tileStruct=tileInitStruct
             tileStruct[15]=i
             tile=tileStruct.join('"')
+            tile=" "*12 +","
             tiles.push(tile)
+            
         }
         tiles=tiles.join("\n")
         navigator.clipboard.writeText(tiles)
@@ -147,6 +149,7 @@ bool_ids=["exclusive","openNotice"]
     function loadProductData(){
         settingProductId()
         getProductData(productId)
+        getDiscountData(productId)
     }
     function settingProductId(){
         productId=document.getElementById("siteUrl").value
@@ -159,6 +162,19 @@ bool_ids=["exclusive","openNotice"]
         }
         document.getElementById("title").value = datas["goodsName"]
         document.getElementById("place").value = datas["placeName"] + ', '+datas["placeCode"]
+
+    }
+    function settingDiscount(data){
+        const sel = document.getElementById("discountSelect");
+        for (i in data){
+            const opt = document.createElement("option");
+            infos =data[i]
+            text=infos[0]+" | "+infos[2]+"원 | "+infos[1]
+            opt.value = text;
+            opt.text = text;
+            sel.add(opt, null);
+        }
+        
 
     }
 }
