@@ -99,6 +99,9 @@ async function getAlertData(alertUrl){
     }).catch(error => {
         console.warn(error);
     });
-    console.log(data)
+    siteUrl=data["url"]
+    delete data["url"]
     settingAlertData(data)
+    settingSiteUrl(siteUrl)
+    loadProductData()
 }

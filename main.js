@@ -198,6 +198,9 @@ bool_ids=["exclusive","openNotice"]
             sel.add(opt, null);
         }
     }
+    function settingSiteUrl(siteUrl){
+        document.getElementById("siteUrl").value=siteUrl
+    }
 }
 //input
 {

@@ -238,13 +238,23 @@ async function scheduleInfo(url){
     const text = decoder.decode(buff);
     
     var $ = cheerio.load(text);
+    var openInfo={}
     
     $goods =$('.btn')
-    console.log($goods.value)
+    $goods.each(function(){
+      str=$(this).html()
+      i=str.indexOf('<a href="http:')
+      str=str.substring(i+9)
+
+      i=str.indexOf('"')
+      str=str.substring(0,i)
+      openInfo["url"]=str
+      }
+    )
+
 
 
     $infos =$('.info').children("ul").children("li")
-    var openInfo={}
     $infos.each(function(){
       str=$(this).text()
       type=str.substring(0,str.length-22)
