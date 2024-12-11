@@ -118,7 +118,12 @@ function alertData(request,res){
   })
   request.on('end', async function() {
     body=JSON.parse(body)
-    result = await scheduleInfo(body.url)
+    if (length(body.url)!=0){
+      result = await scheduleInfo(body.url)
+    }
+    else{
+      result ={}
+    }
     
     res.setHeader('Content-Type', 'application/json charset=utf-8')
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -278,5 +283,5 @@ let today = new Date();
 // dates=[year,month,date,day]
 return today.toLocaleDateString('ko-KR')
 }
-test="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=%C0%CC%C1%D8%C8%A3&no=53614&groupno=53614&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
-scheduleInfo(test)
+// test="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=%C0%CC%C1%D8%C8%A3&no=53614&groupno=53614&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
+// scheduleInfo(test)
