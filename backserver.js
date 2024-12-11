@@ -118,10 +118,9 @@ function alertData(request,res){
   })
   request.on('end', async function() {
     body=JSON.parse(body)
-    if (length(body.url)!=0){
+    try {
       result = await scheduleInfo(body.url)
-    }
-    else{
+    }catch{
       result ={}
     }
     
@@ -170,7 +169,7 @@ function fetchJson(options) {
 async function getSiteSummary(id){
   const options = {
     hostname: 'api-ticketfront.interpark.com',
-    path: '/v1/goods/'+id+'/summary?goodsCode=24016412&priceGrade=&seatGrade=',
+    path: '/v1/goods/'+id+'/summary?goodsCode='+id+'&priceGrade=&seatGrade=',
     method: 'GET',
     headers: {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
