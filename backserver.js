@@ -261,8 +261,9 @@ async function scheduleInfo(url){
     $infos =$('.info').children("ul").children("li")
     $infos.each(function(){
       str=$(this).text()
-      type=str.substring(0,str.length-22)
-      value=str.substr(-22)
+      i=str.indexOf('년')
+      value=str.substr(i-4)
+      type=str.substr(0,i-4)
       openInfo[type]=value
     })
     return openInfo
