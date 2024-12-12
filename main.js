@@ -52,7 +52,7 @@ bool_ids=["exclusive","openNotice"]
             tile=JSON.stringify(jsonTileInit)
             console.log(tile)
             
-            tile=("                 ") + tile+","
+            tile=("                      ") + tile+","
             console.log(tile)
             tiles.push(tile)
         }
