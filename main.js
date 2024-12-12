@@ -33,28 +33,35 @@ bool_ids=["exclusive","openNotice"]
         ms1=massage1(inits["title"])
         navigator.clipboard.writeText(ms1)
     }
-    function stringJson(){
-        sj=`{"seatGrade":"1","floor":"1층","rowNo":"A열","seatNo":"5","blockNo":"001"},`
-        
-        return sj
-    }
     function copyTile(){
         tiles=[]
-        tileInit=document.getElementById("seatGradeStart")
-        tileEnd=document.getElementById("seatGradeEnd")
-        tileInitStruct=tileInit.value.split('"')
-        tileEndStruct=tileEnd.value.split('"')
-        for (i=tileInitStruct[15]*1;i<=tileEndStruct[15]*1;i++){
-            tileStruct=tileInitStruct
-            tileStruct[15]=i
-            tile=tileStruct.join('"')
-            tile=" "*12 +","
-            tiles.push(tile)
+        tileInit=document.getElementById("seatGradeStart").value
+        tileInit=tileInit.slice(0,-1)
+        jsonTileInit=JSON.parse(tileInit)
+        
+        tileEnd=document.getElementById("seatGradeEnd").value
+        tileEnd=tileEnd.slice(0,-1)
+        jsonTileEnd=JSON.parse(tileEnd)
+        
+        init = Math.min(jsonTileInit["seatNo"],jsonTileEnd["seatNo"])
+        console.log(init)
+        end = Math.max(jsonTileInit["seatNo"],jsonTileEnd["seatNo"])
+
+        for (i=init;i<=end;i++){
+            jsonTileInit["seatNo"]=i
+            tile=JSON.stringify(jsonTileInit)
+            console.log(tile)
             
+            tile=("           ") + tile+","
+            console.log(tile)
+            tiles.push(tile)
         }
+
         tiles=tiles.join("\n")
+        console.log(tiles)
         navigator.clipboard.writeText(tiles)
     }
+    
     function copyUser(){
         user=document.getElementById("users").value
         users=JSON.parse(user)
