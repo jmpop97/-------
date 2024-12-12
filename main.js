@@ -48,7 +48,7 @@ bool_ids=["exclusive","openNotice"]
         end = Math.max(jsonTileInit["seatNo"],jsonTileEnd["seatNo"])
 
         for (i=init;i<=end;i++){
-            jsonTileInit["seatNo"]=i
+            jsonTileInit["seatNo"]=i.toString()
             tile=JSON.stringify(jsonTileInit)
             console.log(tile)
             
