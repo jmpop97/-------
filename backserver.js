@@ -6,21 +6,26 @@ var cheerio = require('cheerio');
 
 var initList
 var server = http.createServer(function(request,res){ 
-  url=request.url
-  if (url =="/saveInit"){
-    saveJson(request,res)
-  }else if(url == "/initList"){
-    initList(request,res)
-  }else if(url == "/loadInit"){
-    loadInit(request,res)
-  }else if(url == "/productData"){
-    productData(request,res)
-  }else if(url == "/discountData"){
-    discountData(request,res)
-  }else if(url == "/alertData"){
-    alertData(request,res)
+  try {
+    url=request.url
+    if (url =="/saveInit"){
+      saveJson(request,res)
+    }else if(url == "/initList"){
+      initList(request,res)
+    }else if(url == "/loadInit"){
+      loadInit(request,res)
+    }else if(url == "/productData"){
+      productData(request,res)
+    }else if(url == "/discountData"){
+      discountData(request,res)
+    }else if(url == "/alertData"){
+      alertData(request,res)
+    }
+    
+  } catch (error) {
+    
   }
-  
+
 });
 
 // 3. listen 함수로 8080 포트를 가진 서버를 실행한다. 서버가 실행된 것을 콘솔창에서 확인하기 위해 'Server is running...' 로그를 출력한다
