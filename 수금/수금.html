@@ -29,12 +29,12 @@
 
     <!-- 2층 -->
     <div class="input-container">
-        <label for="seatGradeStart" rows="20" style="border: 1px solid ; float: left; width: 33%;">
+        <label for="seatGradeStart" rows="20" style="border: 1px solid ; float: left; width: 20%;">
             유저
             <br>
             <textarea id = "inputUser" type="text" placeholder="유저"rows="20" style="border: 1px solid ; float: left; width: 100%;"></textarea>
         </label>
-        <label for="seatGradeStart" rows="20" style="border: 1px solid ; float: left; width: 33%;">
+        <label for="seatGradeStart" rows="20" style="border: 1px solid ; float: left; width: 70%;">
             좌석
             <br>
             <textarea  id = "inputSeat" type="text" placeholder="좌석"rows="20" style="border: 1px solid ; float: left; width: 100%;"></textarea>
@@ -56,17 +56,17 @@
                     </select>
                     <button id ="selectUserAfter" type="button">&#62</button>
                 </div>
-                <div class="select-block" style="border: 1px solid">
-                    <button id ="seat1" type="button" >seat1</button>
+                <form id="leftSeatList" class="select-block" style="border: 1px solid">
+                    <input type="checkbox" id ="seat1" type="button" >seat1</input>
                     <br>
-                    <button id ="seat2" type="button" >seat1</button>
+                    <input type="checkbox" id ="seat2" type="button" >seat1</input>
                     <br>
-                    <button id ="seat3" type="button" >seat1</button>
+                    <input type="checkbox" id ="seat3" type="button" >seat1</input>
                     <br>
-                    <button id ="seat4" type="button" >seat1</button>
+                    <input type="checkbox" id ="seat4" type="button" >seat1</input>
                     <br>
-                    <button id ="seat5" type="button" >seat1</button>
-                </div>
+                    <input type="checkbox" id ="seat5" type="button" >seat1</input>
+                </form>
                 <div>
                     <button id ="selectUserBefore" type="button" >&#60;</button>
                     <button id = "saveUserData" type="button">저장</button>
@@ -82,10 +82,13 @@
 
         <div  id ="UI" style="border: 1px solid;  float: left;width: 70%;">
             <div  id ="notGetUser" style="border: 1px solid;">
-                나 아직 좌석 선택 못했쪙
+                ??? : 나 아직 좌석 선택 못했쪙
             </div>
             <div  id ="notGetUser" style="border: 1px solid;">
-                하하 json입니당
+                좌석 : 나 아직 못뽑혔쪙
+            </div>
+            <div  id ="notGetUser" style="border: 1px solid;">
+                히히 난 연인이지롱
             </div>
         </div>
     </div>
