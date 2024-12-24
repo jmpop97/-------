@@ -8,6 +8,7 @@ var initList
 var server = http.createServer(function(request,res){ 
   try {
     url=request.url
+    console.log(url)
     if (url =="/saveInit"){
       saveJson(request,res)
     }else if(url == "/initList"){
@@ -20,6 +21,8 @@ var server = http.createServer(function(request,res){
       discountData(request,res)
     }else if(url == "/alertData"){
       alertData(request,res)
+    }else if(url == "/money/initList"){
+      initMoneyList(request,res)
     }else if(url == "/money/saveInit"){
       saveMoneyJson(request,res)
     }
@@ -96,6 +99,13 @@ function saveMoneyJson(request,res){
 }
 function initList(request,res){
   dir="./InitData"
+  filelists=fs.readdirSync(dir)
+  res.setHeader('Content-Type', 'application/json charset=utf-8')
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.end(JSON.stringify(filelists.reverse()))
+}
+function initMoneyList(request,res){
+  dir="./수금Data"
   filelists=fs.readdirSync(dir)
   res.setHeader('Content-Type', 'application/json charset=utf-8')
   res.setHeader("Access-Control-Allow-Origin", "*");

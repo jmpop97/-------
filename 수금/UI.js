@@ -1,3 +1,15 @@
+function setInitList(data){
+    const sel = document.getElementById("selectData")
+    sel.innerHTML=''
+    for (i in data){
+        const opt = document.createElement("option")
+        opt.value = i;
+        opt.text = data[i].slice(0,-5);
+        sel.add(opt, null);
+    }
+}
+
+
 function putAll(data){
     document.getElementById("goodsName").value = data["goodsName"]
     document.getElementById("inputUser").value = data["user"]
@@ -75,8 +87,7 @@ function userBefore(){
     user=users[userI]
     putSeatData(datas["userSeat"][user])   
 }
-putAll(datas)
-
+getInitList()
 
 //~~~~~~~~~event~~~~~~~~~
 document.getElementById("saveInputData").addEventListener("click",loadInputData)
