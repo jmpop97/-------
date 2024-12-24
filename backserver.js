@@ -20,6 +20,8 @@ var server = http.createServer(function(request,res){
       discountData(request,res)
     }else if(url == "/alertData"){
       alertData(request,res)
+    }else if(url == "/money/saveInit"){
+      saveMoneyJson(request,res)
     }
     
   } catch (error) {
@@ -64,7 +66,34 @@ function saveJson(request,res){
 
 
 }
+function saveMoneyJson(request,res){
+  var body = ''
+  request.on('data', function(data) {
+    body += data
+  })
+  request.on('end', function() {
+    body=JSON.parse(body)
+    console.log(body.goodsName)
+    let json = JSON.stringify(body,null,2);
+    let today = getDate()
+    today=today.replaceAll(".","_")
+    today=today.replaceAll(" ","")
+    path="./수금Data/"+today+" - "+body.goodsName+".json"
+    console.log(ㅔㅁ소)
+    try {
+        fs.writeFileSync(path, json);
+      } catch (error) {
+        console.log(error)
+      }
 
+    res.setHeader('Content-Type', 'application/json charset=utf-8')
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end("hi")
+  })
+
+
+
+}
 function initList(request,res){
   dir="./InitData"
   filelists=fs.readdirSync(dir)

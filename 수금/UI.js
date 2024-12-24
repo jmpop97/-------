@@ -4,9 +4,9 @@ function putAll(data){
     document.getElementById("inputSeat").value = data["seat"]
     putUserData(Object.keys(data["userSeat"]))
     putSeatData(data["userSeat"]["한놈"])
+    
 }
 function putUserData(userList){
-    console.log(userList)
     const sel = document.getElementById("selectUser")
     sel.innerHTML=''
     for (i in userList){
@@ -17,7 +17,6 @@ function putUserData(userList){
     }
 }
 function putSeatData(seatList){
-    console.log(seatList)
     const sel = document.getElementById("leftSeatList")
     sel.innerHTML=''
     for (i in seatList){
@@ -26,11 +25,64 @@ function putSeatData(seatList){
         opt.type="checkbox"
         opt.id = "seat"+i;
         opt.value = "seat"+i;
-        sel.append(opt,seatList[i])
+        
+        text=seatList[i]
+        text=seatDate[text]["seat"]+"  |  "+seatDate[text]["day"]+"  |  "+seatDate[text]["character"]
+        sel.append(opt,text)
         const br = document.createElement("br")
         sel.append(br)
-
-
     }
 }
+
+function getInputUserData(){
+    users=Object.keys(userData)
+    putUserData(users)
+}
+function getInputSeatData(){
+    seats=datas["userSeat"]["한놈"]
+    putSeatData(seats)
+}
+function getInputDatas(){
+    const inputUser = document.getElementById("inputUser").value
+    users=inputUser.split("\n")
+    const inputSeat = document.getElementById("inputSeat").value
+    seats=inputSeat.split("\n")
+}
+function loadInputData(){
+    getInputDatas()
+    getInputUserData()
+    getInputSeatData()
+    saveInit()
+}
+function userSelet(){
+    userI=document.getElementById("selectUser").value
+    user=users[userI]
+    putSeatData(datas["userSeat"][user])
+}
+function userNext(){
+    console.log(userI)
+    if (userI<users.length-1){
+        userI++
+    }
+    user=users[userI]
+    putSeatData(datas["userSeat"][user])   
+}
+function userBefore(){
+    console.log(userI)
+    if (userI>0){
+        userI--
+    }
+    user=users[userI]
+    putSeatData(datas["userSeat"][user])   
+}
 putAll(datas)
+
+
+//~~~~~~~~~event~~~~~~~~~
+document.getElementById("saveInputData").addEventListener("click",loadInputData)
+document.getElementById("selectUser").addEventListener("change",userSelet)
+document.getElementById("selectUserAfter1").addEventListener("click",userNext)
+document.getElementById("selectUserAfter2").addEventListener("click",userNext)
+document.getElementById("selectUserBefore1").addEventListener("click",userBefore)
+document.getElementById("selectUserBefore2").addEventListener("click",userBefore)
+
