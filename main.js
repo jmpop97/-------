@@ -163,9 +163,13 @@ bool_ids=["exclusive","openNotice"]
         getDiscountData(productId)
     }
     function settingProductId(){
-        productId=document.getElementById("siteUrl").value
-        var regex = /[^0-9]/g;
-        productId = productId.replace(regex, "");
+        siteUrl=document.getElementById("siteUrl").value
+        detail=siteUrl.split("/")
+        productId =detail[detail.length-1]
+        last=productId[(productId.length - 1)]
+        if (last =="?"){
+            productId=productId.slice(0,-1)
+        }
     }
     function settingAlertUrl(){
         alertUrl=document.getElementById("notificationUrl").value
