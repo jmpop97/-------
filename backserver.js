@@ -23,6 +23,8 @@ var server = http.createServer(function(request,res){
       alertData(request,res)
     }else if(url == "/money/initList"){
       initMoneyList(request,res)
+    }else if(url == "/money/loadInit"){
+      loadMoneyInit(request,res)
     }else if(url == "/money/saveInit"){
       saveMoneyJson(request,res)
     }
@@ -81,8 +83,7 @@ function saveMoneyJson(request,res){
     let today = getDate()
     today=today.replaceAll(".","_")
     today=today.replaceAll(" ","")
-    path="./수금Data/"+today+" - "+body.goodsName+".json"
-    console.log(ㅔㅁ소)
+    path="./Data수금/"+today+" - "+body.goodsName+".json"
     try {
         fs.writeFileSync(path, json);
       } catch (error) {
@@ -105,7 +106,7 @@ function initList(request,res){
   res.end(JSON.stringify(filelists.reverse()))
 }
 function initMoneyList(request,res){
-  dir="./수금Data"
+  dir="./Data수금"
   filelists=fs.readdirSync(dir)
   res.setHeader('Content-Type', 'application/json charset=utf-8')
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -121,6 +122,20 @@ function loadInit(request,res){
 
     body=JSON.parse(body)
     const jsonFile = fs.readFileSync('./InitData/'+body.fileName, 'utf8');
+    res.setHeader('Content-Type', 'application/json charset=utf-8')
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(jsonFile)
+  })
+}
+function loadMoneyInit(request,res){
+  var body = ''
+  request.on('data', function(data) {
+    body += data
+  })
+  request.on('end', function() {
+
+    body=JSON.parse(body)
+    const jsonFile = fs.readFileSync('./Data수금/'+body.fileName, 'utf8');
     res.setHeader('Content-Type', 'application/json charset=utf-8')
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(jsonFile)
