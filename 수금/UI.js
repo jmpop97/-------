@@ -1,6 +1,12 @@
 function inputGoodName(){
     datas["goodName"]=document.getElementById("goodName").value
     console.log(datas.goodName)
+    
+}
+function setCountN(){
+    text="user : "+Object.keys(datas.userSeat).length +" seat : "+Object.keys(datas.seatData).length
+    console.log(text)
+    document.getElementById("countN").innerHTML=text
 }
 function setInitList(data){
     const sel = document.getElementById("selectData")
@@ -14,6 +20,7 @@ function setInitList(data){
 }
 function selectInit(){
     getInit(document.getElementById("selectData").value)
+    
 }
 function putInits(data){
     datas=data
@@ -133,6 +140,7 @@ function loadInputData(){
     datas.userI=0
     settingbutton()
     saveInit()
+    setCountN()
 }
 function settingbutton(){
     putUserData()

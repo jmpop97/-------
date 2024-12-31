@@ -29,6 +29,7 @@ async function getInit(fileName){
         console.warn(error);
     });
     putInits(data)
+    setCountN()
 }
 
 async function saveInit(){
