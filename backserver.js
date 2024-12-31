@@ -83,7 +83,7 @@ function saveMoneyJson(request,res){
     let today = getDate()
     today=today.replaceAll(".","_")
     today=today.replaceAll(" ","")
-    path="./Data수금/"+today+" - "+body.goodsName+".json"
+    path="./Data수금/"+today+body.goodName+".json"
     try {
         fs.writeFileSync(path, json);
       } catch (error) {

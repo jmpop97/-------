@@ -20,7 +20,7 @@ function putInits(data){
     putAll()
 }
 function putAll(){
-    document.getElementById("goodsName").value = datas["goodsName"]
+    document.getElementById("goodName").value = datas["goodName"]
     document.getElementById("inputUser").value = datas["user"]
     document.getElementById("inputSeat").value = datas["seat"]
     
