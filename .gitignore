@@ -1,4 +1,6 @@
 env.js
+node_modules
 InitData/*
 !InitData/new.json
-node_modules
+Data수금/*
+!Data수금/new.json
