@@ -78,7 +78,7 @@ function saveMoneyJson(request,res){
   })
   request.on('end', function() {
     body=JSON.parse(body)
-    console.log(body.goodsName)
+    console.log(body.goodName)
     let json = JSON.stringify(body,null,2);
     let today = getDate()
     today=today.replaceAll(".","_")

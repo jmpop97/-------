@@ -1,3 +1,7 @@
+function inputGoodName(){
+    datas["goodName"]=document.getElementById("goodName").value
+    console.log(datas.goodName)
+}
 function setInitList(data){
     const sel = document.getElementById("selectData")
     sel.innerHTML=''
@@ -227,6 +231,7 @@ function UIUserSeat() {
 getInitList()
 
 //~~~~~~~~~event~~~~~~~~~
+document.getElementById("goodName").addEventListener("change",inputGoodName)
 document.getElementById("saveInputData").addEventListener("click",loadInputData)
 document.getElementById("selectUser").addEventListener("change",userSelet)
 document.getElementById("selectUserAfter1").addEventListener("click",userNext)
