@@ -31,6 +31,7 @@ async function getInit(fileName){
     });
     putInits(data)
     setValues()
+    settingbutton()
 }
 
 async function saveInit(inits){

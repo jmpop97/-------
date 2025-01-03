@@ -1,14 +1,10 @@
 {
-  "exclusive":false,
-  "openNotice" : false,
-  "openDate" : "",
-  "eventPeriod" : "",
-  "snsUrl" : "",
-  "siteUrl" : "",
-  "place" : "",
-  "discount" : "",
-  "seatGradeStart" : "",
-  "seatGradeEnd" : "",
-  "title" : "",
-  "users":""
+  "goodName": "",
+  "user": "",
+  "seat": "",
+  "userSeat": {
+  },
+  "seatData": {
+  },
+  "userI": 0
 }

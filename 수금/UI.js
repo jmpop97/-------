@@ -66,7 +66,7 @@ function putSeatData(){
         opt.addEventListener("click",()=>{seatClick(opt)})
         text=seatList[i]
         opt.checked=seatData[text]["select"]
-        text=seatData[text]["seat"]+"  |  "+seatData[text]["day"]+"  |  "+seatData[text]["character"]
+        text=seatData[text]["seat"]+"  |  "+seatData[text]["day"]+"  |  "+seatData[text]["character"] + "|"+ text
         sel.append(opt,text)
         const br = document.createElement("br")
         sel.append(br)
@@ -111,6 +111,7 @@ function getInputUserData(){
             "character":character,
             "id_pwd":id_pwd,
             "ph":ph,
+            "text":seats[i],
             "select": false
         }
         try {
@@ -190,27 +191,38 @@ function UILeftSeat(){
                 leftSeat[key]={
                     "day":seatInfo.day,
                     "character":seatInfo.character,
-                    "seats":[]
+                    "seats":[],
+                    "texts":[]
                 }
             }
             leftSeat[key].seats.push(seatInfo.day+"|"+seatInfo.seat+"|"+seatInfo.character)
+            leftSeat[key].texts.push(seatInfo.text)
         }
     }
     goodsList=Object.keys(leftSeat).sort()
     text=""
+    text2=""
     for(goodsI in goodsList){
         good=goodsList[goodsI]
         text+=`- `+leftSeat[good].character+"\n"
         text+=leftSeat[good].day+"\n"
         
         leftSeatInfos=leftSeat[good].seats
+        leftSeatInfos2=leftSeat[good].texts
         for(seatsI in leftSeatInfos){
             text+=leftSeatInfos[seatsI]+"\n"
         }
+        for(seatsI in leftSeatInfos2){
+            text2+=leftSeatInfos2[seatsI]+"\n"
+        }
+        text+="\n"
+        text2+="\n"
+        console.log(text2)
     }
-    text+="\n"
     document.getElementById("leftSeat").innerText=text
+    document.getElementById("leftSeatData").innerText=text2
 }
+
 function UIUserSeat() {
     const opt = document.getElementById("userSeat");
     let text = "";
