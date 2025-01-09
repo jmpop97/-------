@@ -261,4 +261,5 @@ document.getElementById("selectUserBefore1").addEventListener("click",userBefore
 document.getElementById("selectUserBefore2").addEventListener("click",userBefore)
 document.getElementById("selectData").addEventListener("change",selectInit)
 document.getElementById("saveUserData").addEventListener("click",selectSave)
+document.getElementById("reset").addEventListener("click",window.location.reload)
 
