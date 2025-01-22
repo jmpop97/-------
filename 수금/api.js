@@ -9,7 +9,7 @@ async function getInitList(){
         setInitList(data)
         return data
     }).catch(error => {
-        console.warn(error);
+        window.alert(["fail"]);
     });
     return data
 }
@@ -26,7 +26,7 @@ async function getInit(fileName){
         const data = JSON.parse(text);
         return data
     }).catch(error => {
-        console.warn(error);
+        window.alert(["fail"]);
     });
     putInits(data)
     setCountN()
@@ -43,7 +43,7 @@ async function saveInit(){
         const data = JSON.parse(text);
         return data
     }).catch(error => {
-        console.warn(error);
+        window.alert(["fail"]);
     });
     return data
 }

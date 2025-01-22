@@ -223,6 +223,7 @@ bool_ids=["exclusive","openNotice"]
     document.getElementById("tiles").addEventListener("click", copyTile);
     document.getElementById("copyUserDatas").addEventListener("click", copyUser);
     document.getElementById("reset").addEventListener("click",settingInit);
+    document.getElementById("goMoney").addEventListener("click",settingInit);
 }
 
 

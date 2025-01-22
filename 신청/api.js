@@ -9,7 +9,7 @@ async function getInitList(){
         setInitList(data)
         return data
     }).catch(error => {
-        console.warn(error);
+        window.alert(["fail"]);
     });
     return data
 }
@@ -27,7 +27,7 @@ async function getInit(fileName){
         const data = JSON.parse(text);
         return data
     }).catch(error => {
-        console.warn(error);
+        window.alert(["fail"]);
     });
     putInits(data)
     setValues()
@@ -45,7 +45,7 @@ async function saveInit(inits){
         const data = JSON.parse(text);
         return data
     }).catch(error => {
-        console.warn(error);
+        window.alert(["fail"]);
     });
     return data
 }
@@ -63,7 +63,7 @@ async function getProductData(id){
         const data = JSON.parse(text);
         return data
     }).catch(error => {
-        console.warn(error);
+        window.alert(["fail"]);
     });
     putProductId(data)
 }
@@ -80,7 +80,7 @@ async function getDiscountData(id){
         const data = JSON.parse(text);
         return data
     }).catch(error => {
-        console.warn(error);
+        window.alert(["fail"]);
     });
     console.log(data)
     settingDiscount(data)
@@ -98,7 +98,7 @@ async function getAlertData(alertUrl){
         const data = JSON.parse(text);
         return data
     }).catch(error => {
-        console.warn(error);
+        window.alert(["fail"]);
     });
     siteUrl=data["url"]
     delete data["url"]
