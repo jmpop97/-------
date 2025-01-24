@@ -41,9 +41,6 @@ async function saveInit(inits){
         body: JSON.stringify(inits),
     }).then(response => {
         return response.text();
-    }).then(text => {
-        const data = JSON.parse(text);
-        return data
     }).catch(error => {
         window.alert(["fail"]);
     });

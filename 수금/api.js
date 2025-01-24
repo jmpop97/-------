@@ -40,8 +40,6 @@ async function saveInit(){
     }).then(response => {
         return response.text();
     }).then(text => {
-        const data = JSON.parse(text);
-        return data
     }).catch(error => {
         window.alert(["fail"]);
     });
