@@ -139,10 +139,6 @@
             <input type="text" id="discount" name="discount"  required>
         </div>
         <hr style="border: solid 10px black;">
-        <div class="form-group">
-            <label for="openNotice">티켓 오픈 공지여부:</label>
-            <input type="checkbox" id="openNotice" name="openNotice">
-        </div>
         
         <div class="form-group">
             <label for="openDate">티켓오픈 공연기간:</label>
@@ -177,13 +173,17 @@
         </div>
         <div class="form-group">
             <label for="rowColGroupList">rowColGroupList:</label>
-            <textarea id = "users" cols="100" rows="4"></textarea></p>
+            <textarea id = "rowColGroupList" cols="100" rows="4"></textarea></p>
         </div>
         <div class="form-group">
             <label for="siteLoginInfo">siteLoginInfo</label>
             <textarea id = "siteLoginInfo" cols="100" rows="1"></textarea></p>
             <label for="users">유저정보</label>
-            <textarea id = "users" cols="100" rows="50"></textarea></p>
+            <textarea id = "users" cols="100" rows="10"></textarea></p>
+        </div>
+        <div class="form-group">
+            <label for="Result">Result</label>
+            <textarea id = "Result" cols="100" rows="50"></textarea></p>
         </div>
     </form>
 </div>
@@ -198,7 +198,8 @@
     <button id="copyUserDatas" class="fixed-link-button">유저 # 복사</button>
     <!-- <a id ="recipeBMBI" class="fixed-link-button">레시피BMBI</a> -->
     <a id ="reset" href="" class="fixed-link-button">리셋</a>
-    <button id ="goMoney"type="button" class="fixed-link-button" onclick="location.href='file:/Users/jmpop/projects/work/인터파크자동화/수금/수금.html' ">수금</button>
+    <button id="getResultForm" class="fixed-link-button">결과보기</button>
+    <button id ="goMoney"type="button" class="fixed-link-button" onclick="location.href='file:/Users/jmpop/projects/work/인터파크자동화/수금/수금.html' ">수금 이동</button>
     <button id ="post"type="button" class="fixed-link-button">보내기</button>
 </div>
 

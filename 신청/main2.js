@@ -240,7 +240,10 @@ bool_ids=["exclusive","openNotice"]
         saveFormNormal.rowColYn="Y"
         saveFormNormal.rowColGroupList=JSON.parse(document.querySelector("#rowColGroupList").value)
         saveFormNormal.siteLoginInfo=document.querySelector("#siteLoginInfo").value
-
+    }
+    function getResultForm(){
+        setData()
+        document.querySelector("#Result").value=JSON.stringify(saveFormNormal, null, 2)
     }
 }
 //input
@@ -255,6 +258,7 @@ bool_ids=["exclusive","openNotice"]
     document.getElementById("reset").addEventListener("click",settingInit);
     document.getElementById("goMoney").addEventListener("click",settingInit);
     document.getElementById("post").addEventListener("click",setData);
+    document.getElementById("getResultForm").addEventListener("click",getResultForm);
 }
 
 
