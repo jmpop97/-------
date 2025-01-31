@@ -281,6 +281,7 @@ async function getSitePriceGroup(id){
   const datas= await fetchJson(options)
   result={}
   i=0
+
   for (seatsName in datas){
     seats=datas[seatsName]
     for (discounts in seats){
@@ -342,5 +343,6 @@ let today = new Date();
 // dates=[year,month,date,day]
 return today.toLocaleDateString('ko-KR')
 }
-// test="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=%C0%CC%C1%D8%C8%A3&no=53614&groupno=53614&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
-// scheduleInfo(test)
+test="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=PLAYER&no=54211&groupno=54211&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
+testId="L0000114"
+getSitePriceGroup(testId)
