@@ -25,7 +25,6 @@ saveFormNormal={
     "selfDefineBlock": "001",
     "ticketOpenSite": "INPK",
     "rowColYn": "Y",
-    "selfDefineBlock": "001",
     "rowColGroupList": [
         {
             "rowColList":[
