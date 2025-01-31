@@ -238,30 +238,9 @@ bool_ids=["exclusive","openNotice"]
         saveFormNormal.selfDefineBlock=document.querySelector("#selfDefineBlock").value
         saveFormNormal.ticketOpenSite="INPK"
         saveFormNormal.rowColYn="Y"
-        saveFormNormal.rowColGroupList=[
-            {
-                "rowColList":[
-                {"rowNum": 1, "colNum": 7 },
-                {"rowNum": 1, "colNum": 8 },
-                {"rowNum": 1, "colNum": 9 },
-                {"rowNum": 1, "colNum": 10 },
-                {"rowNum": 1, "colNum": 11 },
-                {"rowNum": 1, "colNum": 12 },
-                {"rowNum": 1, "colNum": 13 },
-                {"rowNum": 1, "colNum": 14 },
-                {"rowNum": 1, "colNum": 15 },
-                {"rowNum": 1, "colNum": 16 },
-                {"rowNum": 1, "colNum": 17 },
-                {"rowNum": 1, "colNum": 18 },
-                {"rowNum": 1, "colNum": 19 },
-                {"rowNum": 1, "colNum": 20 },
-                {"rowNum": 1, "colNum": 21 },
-                {"rowNum": 1, "colNum": 22 }
-            ]}
-        ]
-        saveFormNormal.playDateTime=
-        saveFormNormal.
-        console.log(saveFormNormal.goodsCode)
+        saveFormNormal.rowColGroupList=JSON.parse(document.querySelector("#rowColGroupList").value)
+        saveFormNormal.siteLoginInfo=document.querySelector("#siteLoginInfo").value
+
     }
 }
 //input

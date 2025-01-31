@@ -124,6 +124,7 @@
             <input type="text" id="placeId" name="placeId" required>
             <input type="text" id="selfDefineBlock" name="selfDefineBlock" value="00"required>
         </div>
+
         <div class="form-group">
             <label for="exclusive">인터파크 단독여부:</label>
             <input type="checkbox" id="exclusive" name="exclusive">
@@ -146,6 +147,8 @@
         <div class="form-group">
             <label for="openDate">티켓오픈 공연기간:</label>
             <input type="text" id="openDate" name="openDate" required>
+            <label for="openDate">playDateTime:</label>
+            <input type="text" id="playDateTime" name="playDateTime" value="2025.03.22 (토) 18시 00분" required>
         </div>
         
         <div class="form-group">
@@ -153,7 +156,14 @@
             <input type="text" id="snsUrl" name="snsUrl" >
         </div>
                 
-
+        <div class="form-group">
+            <label for="ticketingMode">ticketingModeSelect:</label>
+            <div id ="ticketingMode">
+                <select id ="ticketingModeSelect">
+                    <option value="NORMAL">NORMAL</option>
+                </select>
+            </div>
+        </div>
         
 
         
@@ -166,6 +176,12 @@
             <input type="text" id="seatGradeEnd" name="seatGradeEnd"  required>
         </div>
         <div class="form-group">
+            <label for="rowColGroupList">rowColGroupList:</label>
+            <textarea id = "users" cols="100" rows="4"></textarea></p>
+        </div>
+        <div class="form-group">
+            <label for="siteLoginInfo">siteLoginInfo</label>
+            <textarea id = "siteLoginInfo" cols="100" rows="1"></textarea></p>
             <label for="users">유저정보</label>
             <textarea id = "users" cols="100" rows="50"></textarea></p>
         </div>
