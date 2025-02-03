@@ -250,13 +250,44 @@ async function getSiteSummary(id){
   goodsName=data["goodsName"]
   placeName=data["placeName"]
   placeCode=data["placeCode"]
-  specialSeatingName=data["specialSeatingName"] //단독판매
+  specialSeatingName=data["specialSeatingName"]
+  const dates = await getSiteSummaryDate(id,data["playEndDate"],data["playStartDate"])
+  console.log(dates)
   return {
     goodsName,
     placeName,
     placeCode,
-    specialSeatingName
+    specialSeatingName,
+    dates
   }
+}
+async function getSiteSummaryDate(id,endDate,startDate){
+  const options = {
+    hostname: 'api-ticketfront.interpark.com',
+    path: '/v1/goods/'+id+'/playSeq?endDate='+endDate+'&goodsCode='+id+'&isBookableDate=true&page=1&pageSize=1550&startDate='+startDate,
+    method: 'GET',
+    headers: {
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'accept-language': 'ko-KR,ko;q=0.9',
+        'priority': 'u=0, i',
+        'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"macOS"',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'none',
+        'sec-fetch-user': '?1',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+    }
+  }; 
+  const datas= await fetchJson(options)
+  data=datas["data"]
+  dates=[]
+  for (dataI in data){
+    dates.push(data[dataI].playDate+data[dataI].playTime)
+  }
+  return dates
 }
 async function getSitePriceGroup(id){
   const options = {
@@ -345,4 +376,4 @@ return today.toLocaleDateString('ko-KR')
 }
 test="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=PLAYER&no=54211&groupno=54211&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
 testId="L0000114"
-getSitePriceGroup(testId)
+// getSiteSummary(testId)

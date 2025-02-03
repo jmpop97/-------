@@ -138,14 +138,22 @@
             </div>
             <input type="text" id="discount" name="discount"  required>
         </div>
-        <hr style="border: solid 10px black;">
-        
         <div class="form-group">
-            <label for="openDate">티켓오픈 공연기간:</label>
-            <input type="text" id="openDate" name="openDate" required>
-            <label for="openDate">playDateTime:</label>
-            <input type="text" id="playDateTime" name="playDateTime" value="2025.03.22 (토) 18시 00분" required>
+            <label for="playDateTimeSelecter">playDateTime:</label>
+            <div id ="playDateTimeSelecter">
+                <select id ="playDateTimeSelect">
+                    <option value="">-- 선택하세요 --</option>
+                </select>
+            </div>
+            <input type="text" id="playDateTime" name="playDateTime"  required>
         </div>
+
+        <hr style="border: solid 10px black;">
+        <div class="form-group">
+            <label for="openNotice">티켓 오픈 공지여부:</label>
+            <input type="checkbox" id="openNotice" name="openNotice">
+        </div>
+
         
         <div class="form-group">
             <label for="snsUrl">SNS 주소:</label>

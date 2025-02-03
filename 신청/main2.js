@@ -175,13 +175,44 @@ bool_ids=["exclusive","openNotice"]
         alertUrl=document.getElementById("notificationUrl").value
     }
     function putProductId(datas){
-        if (datas["specialSeatingName"]=="단독판매"){
-            document.getElementById("exclusive").checked=true
-        }
         document.getElementById("title").value = datas["goodsName"]
         document.getElementById("place").value = datas["placeName"]
         document.getElementById("placeId").value = datas["placeCode"]
-
+        if (datas["specialSeatingName"]=="단독판매"){
+            document.getElementById("exclusive").checked=true
+        }
+        console.log(datas["dates"])
+        putDates(datas["dates"])
+    }
+    function putDates(dates){
+        const sel = document.getElementById("playDateTimeSelect");
+        for (i in dates){
+            console.log(dates[i])
+            const opt = document.createElement("option");
+            text=formatDateTime(dates[i])
+            opt.value = text;
+            opt.text = text;
+            sel.add(opt, null);
+        }
+        sel.addEventListener("change",clickDates)
+    }
+    function formatDateTime(dateString) {
+        const year = dateString.slice(0, 4);
+        const month = dateString.slice(4, 6);
+        const day = dateString.slice(6, 8);
+        const hour = dateString.slice(8, 10);
+        const minute = dateString.slice(10, 12);
+    
+        // 요일 계산
+        const date = new Date(`${year}-${month}-${day}`);
+        const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
+        const weekDay = weekDays[date.getDay()];
+    
+        return `${year}.${month}.${day} (${weekDay}) ${hour}시 ${minute}분`;
+    }
+    function clickDates(){
+        console.log(document.getElementById("playDateTimeSelect").value)
+        document.querySelector("#playDateTime").value=document.getElementById("playDateTimeSelect").value
     }
     function settingDiscount(data){
         const sel = document.getElementById("discountSelect");
@@ -239,6 +270,7 @@ bool_ids=["exclusive","openNotice"]
         saveFormNormal.ticketOpenSite="INPK"
         saveFormNormal.rowColYn="Y"
         saveFormNormal.rowColGroupList=JSON.parse(document.querySelector("#rowColGroupList").value)
+        saveFormNormal.playDateTime=document.querySelector("#playDateTime").value
         saveFormNormal.siteLoginInfo=document.querySelector("#siteLoginInfo").value
     }
     function getResultForm(){
@@ -266,6 +298,7 @@ bool_ids=["exclusive","openNotice"]
 checkids=["exclusive","openNotice"]
 {
     for (i in checkids){
+        console.log(checkids[i])
         setCheckbox(checkids[i])
     }
     // 초기 로딩 시 링크 설정
