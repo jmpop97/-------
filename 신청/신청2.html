@@ -82,6 +82,21 @@
         .fixed-link-button:hover {
             background-color: #0056b3;
         }
+
+        .seatContainer {
+            display: flex;
+            gap: 20px; /* 요소 간 간격 조정 */
+            align-items: center; /* 수직 정렬 */
+        }
+        .seatField {
+            display: flex;
+            align-items: center;
+            gap: 5px; /* 라벨과 입력 필드 간격 */
+        }
+        input[type="number"] {
+            width: 2.5em; /* 숫자 2개가 들어갈 정도의 크기 */
+            text-align: center; /* 숫자 중앙 정렬 */
+        }
     </style>
 </head>
 <body>
@@ -99,7 +114,7 @@
         </div>
         <div class="form-group">
             <label for="notificationUrl">공지 주소:</label>
-            <input type="text" id="notificationUrl" name="notificationUrl"required>
+            <input type="text" id="notificationUrl" name="notificationUrl">
         </div>
         <div class="form-group">
             <label for="eventPeriod">티켓 오픈 :</label>
@@ -108,21 +123,21 @@
                     <option value="">-- 선택하세요 --</option>
                 </select>
             </div>
-            <input type="text" id="eventPeriod" name="eventPeriod"required>
+            <input type="text" id="eventPeriod" name="eventPeriod">
         </div>
         <div class="form-group">
             <label for="siteUrl">사이트 주소:</label>
-            <input type="text" id="siteUrl" name="siteUrl"required>
+            <input type="text" id="siteUrl" name="siteUrl">
         </div>
         <div class="form-group">
             <label for="title">공연 이름</label>
-            <input type="text" id="title" name="seatGradeEnd"  required>
+            <input type="text" id="title" name="seatGradeEnd"  >
         </div>
         <div class="form-group">
             <label for="place">장소 (Place):</label>
-            <input type="text" id="place" name="place" required>
-            <input type="text" id="placeId" name="placeId" required>
-            <input type="text" id="selfDefineBlock" name="selfDefineBlock" value="00"required>
+            <input type="text" id="place" name="place" >
+            <input type="text" id="placeId" name="placeId" >
+            <input type="text" id="selfDefineBlock" name="selfDefineBlock" value="00">
         </div>
 
         <div class="form-group">
@@ -136,7 +151,7 @@
                     <option value="">-- 선택하세요 --</option>
                 </select>
             </div>
-            <input type="text" id="discount" name="discount"  required>
+            <input type="text" id="discount" name="discount"  >
         </div>
         <div class="form-group">
             <label for="playDateTimeSelecter">playDateTime:</label>
@@ -145,7 +160,7 @@
                     <option value="">-- 선택하세요 --</option>
                 </select>
             </div>
-            <input type="text" id="playDateTime" name="playDateTime"  required>
+            <input type="text" id="playDateTime" name="playDateTime"  >
         </div>
 
         <hr style="border: solid 10px black;">
@@ -154,7 +169,7 @@
             <input type="checkbox" id="openNotice" name="openNotice">
         </div>
 
-        
+
         <div class="form-group">
             <label for="snsUrl">SNS 주소:</label>
             <input type="text" id="snsUrl" name="snsUrl" >
@@ -170,18 +185,19 @@
         </div>
         
 
-        
-        <div class="form-group">
-            <label for="seatGradeStart">좌석 등급 시작:</label>
-            <input type="text" id="seatGradeStart" name="seatGradeStart"  required>
-        </div>
-        <div class="form-group">
-            <label for="seatGradeEnd">좌석 등급 끝:</label>
-            <input type="text" id="seatGradeEnd" name="seatGradeEnd"  required>
-        </div>
         <div class="form-group">
             <label for="rowColGroupList">rowColGroupList:</label>
-            <textarea id = "rowColGroupList" cols="100" rows="4"></textarea></p>
+            <div class="rowColGroupList" id ="rowColGroupList">
+                <div class="seatField" aria-valuetext=0>
+                    <label for="number-to-show-0">rowNum</label>
+                    <input type="number" id="rowNum-0" value="1">
+                    <label for="number-to-show-0">colNumStart</label>
+                    <input type="number" id="colNum-0-0">
+                    <label for="number-to-show-0">colNumEnd</label>
+                    <input type="number" id="colNum-0-1">
+                    <button type="button" id="addRow-0">추가하기</button>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <label for="siteLoginInfo">siteLoginInfo</label>

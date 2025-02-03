@@ -1,9 +1,7 @@
-value_ids=["exclusive","openNotice","openDate","eventPeriod","snsUrl","siteUrl","place","discount","seatGradeStart","seatGradeEnd","seatGradeEnd","title","users"]        
+value_ids=["exclusive","openNotice","eventPeriod","snsUrl","siteUrl","place","discount","title","users"]        
 bool_ids=["exclusive","openNotice"]
 {
     function updateSeatGradePreview() {
-        const start = document.getElementById("seatGradeStart").value;
-        const end = document.getElementById("seatGradeEnd").value;
         document.getElementById("previewSeatGrade").textContent = `${start} ~ ${end}`;
     }
     function setCheckbox(id){
@@ -35,30 +33,23 @@ bool_ids=["exclusive","openNotice"]
     }
     function copyTile(){
         tiles=[]
-        tileInit=document.getElementById("seatGradeStart").value
         tileInit=tileInit.slice(0,-1)
         jsonTileInit=JSON.parse(tileInit)
-        
-        tileEnd=document.getElementById("seatGradeEnd").value
         tileEnd=tileEnd.slice(0,-1)
         jsonTileEnd=JSON.parse(tileEnd)
         
         init = Math.min(jsonTileInit["seatNo"],jsonTileEnd["seatNo"])
-        console.log(init)
         end = Math.max(jsonTileInit["seatNo"],jsonTileEnd["seatNo"])
 
         for (i=init;i<=end;i++){
             jsonTileInit["seatNo"]=i.toString()
             tile=JSON.stringify(jsonTileInit)
-            console.log(tile)
             
             tile=("                      ") + tile+","
-            console.log(tile)
             tiles.push(tile)
         }
 
         tiles=tiles.join("\n")
-        console.log(tiles)
         navigator.clipboard.writeText(tiles)
     }
     
@@ -105,14 +96,11 @@ bool_ids=["exclusive","openNotice"]
         inits={
             "exclusive":document.getElementById("exclusive").checked,
             "openNotice" : document.getElementById("openNotice").checked,
-            "openDate" : document.getElementById("openDate").value,
             "eventPeriod" : document.getElementById("eventPeriod").value,
             "snsUrl" : document.getElementById("snsUrl").value,
             "siteUrl" : document.getElementById("siteUrl").value,
             "place" : document.getElementById("place").value,
             "discount" : document.getElementById("discount").value,
-            "seatGradeStart" : document.getElementById("seatGradeStart").value,
-            "seatGradeEnd" : document.getElementById("seatGradeEnd").value,
             "title" :document.getElementById("title").value,
             "users" :document.getElementById("users").value,
         }
@@ -269,15 +257,67 @@ bool_ids=["exclusive","openNotice"]
         saveFormNormal.selfDefineBlock=document.querySelector("#selfDefineBlock").value
         saveFormNormal.ticketOpenSite="INPK"
         saveFormNormal.rowColYn="Y"
-        saveFormNormal.rowColGroupList=JSON.parse(document.querySelector("#rowColGroupList").value)
+        saveFormNormal.rowColGroupList=getRowColGroupList()
         saveFormNormal.playDateTime=document.querySelector("#playDateTime").value
         saveFormNormal.siteLoginInfo=document.querySelector("#siteLoginInfo").value
+    }
+    function getRowColGroupList(){
+        rowList=document.querySelector("#rowColGroupList").children
+        rowColList=[]
+        for (i=0;i<rowList.length;i++){
+            detailList=rowList[i]
+            rowNum=Number(detailList.children[1].value)
+            colNumInit=Number(detailList.children[3].value)
+            colNumEnd=Number(detailList.children[5].value)
+            if (colNumInit<=colNumEnd){
+                for (colNum=colNumInit;colNum<=colNumEnd;colNum++){
+                    rowColList.push({rowNum,colNum})
+                }
+            }else{
+                for (colNum=colNumInit;colNum>=colNumEnd;colNum--){
+                    rowColList.push({rowNum,colNum})
+                }
+            }
+        }
+        return [{rowColList}]
     }
     function getResultForm(){
         setData()
         document.querySelector("#Result").value=JSON.stringify(saveFormNormal, null, 2)
     }
-}
+    function addRow(){
+        rowList=document.querySelector("#rowColGroupList")
+        i=(rowList.children.length)
+        const div = document.createElement("div");
+        div.className="seatField"
+        div.ariaValueText=i
+
+        const labelrow = document.createElement("label");
+        labelrow.innerText="rowNum"
+        const inputrow = document.createElement("input");
+        inputrow.type="number"
+        inputrow.id="rowNum-"+i
+        inputrow.value=1
+        const labelcal0 = document.createElement("label");
+        labelcal0.innerText="colNumStart"
+        const inputcal0 = document.createElement("input");
+        inputcal0.type="number"
+        inputcal0.id="rowNum-"+i+"-"+0
+        const labelcal1 = document.createElement("label");
+        labelcal1.innerText="colNumEnd"
+        const inputcal1 = document.createElement("input");
+        inputcal1.type="number"
+        inputcal1.id="rowNum-"+i+"-"+1
+
+        div.appendChild(labelrow)
+        div.appendChild(inputrow)        
+        div.appendChild(labelcal0)
+        div.appendChild(inputcal0)
+        div.appendChild(labelcal1)
+        div.appendChild(inputcal1)
+        rowList.appendChild(div)
+    }
+}   
 //input
 {
     document.getElementById("saveJson").addEventListener("click",settingInit);
@@ -291,6 +331,7 @@ bool_ids=["exclusive","openNotice"]
     document.getElementById("goMoney").addEventListener("click",settingInit);
     document.getElementById("post").addEventListener("click",setData);
     document.getElementById("getResultForm").addEventListener("click",getResultForm);
+    document.getElementById("addRow-0").addEventListener("click",addRow);
 }
 
 
