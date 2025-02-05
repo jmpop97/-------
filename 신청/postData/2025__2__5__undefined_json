@@ -6,7 +6,7 @@
   "priceGradeName": "일반가",
   "placeCode": "L0000001",
   "tmgsOrNot": "D2003",
-  "selfDefineBlock": "00",
+  "selfDefineBlock": "001",
   "ticketOpenSite": "INPK",
   "rowColYn": "Y",
   "rowColGroupList": [

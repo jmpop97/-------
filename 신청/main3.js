@@ -23,7 +23,6 @@ class FileList{
         selector.innerHTML=''
         for (var i in initlist){
             var fileName=initlist[i]
-            console.log(fileName)
             const opt = document.createElement("option");    
             var text=fileName.slice(0, -5)
             opt.value = fileName;
@@ -208,10 +207,143 @@ class PlayDateTime{
     }
 }
 class RowColGroupList{
-    
+    constructor(){
+        document.getElementById("addRow").addEventListener("click",RowColGroupList.clickButtun);
+    }
+    static clickButtun(){
+        var rowList=document.querySelector("#rowColGroupList")
+        var i=(rowList.children.length)
+        const div = document.createElement("div");
+        div.className="seatField"
+        div.ariaValueText=i
+
+        const labelrow = document.createElement("label");
+        labelrow.innerText="rowNum"
+        const inputrow = document.createElement("input");
+        inputrow.type="number"
+        inputrow.id="rowNum-"+i
+        inputrow.value=1
+        const labelcal0 = document.createElement("label");
+        labelcal0.innerText="colNumStart"
+        const inputcal0 = document.createElement("input");
+        inputcal0.type="number"
+        inputcal0.id="rowNum-"+i+"-"+0
+        const labelcal1 = document.createElement("label");
+        labelcal1.innerText="colNumEnd"
+        const inputcal1 = document.createElement("input");
+        inputcal1.type="number"
+        inputcal1.id="rowNum-"+i+"-"+1
+
+        div.appendChild(labelrow)
+        div.appendChild(inputrow)        
+        div.appendChild(labelcal0)
+        div.appendChild(inputcal0)
+        div.appendChild(labelcal1)
+        div.appendChild(inputcal1)
+        rowList.appendChild(div)
+    }
+    static getRowColGroupList(){
+        var rowList=document.querySelector("#rowColGroupList").children
+        var rowColList=[]
+        for (var i=0;i<rowList.length;i++){
+            var detailList=rowList[i]
+            var rowNum=Number(detailList.children[1].value)
+            var colNumInit=Number(detailList.children[3].value)
+            var colNumEnd=Number(detailList.children[5].value)
+            if (colNumInit<=colNumEnd){
+                for (var colNum=colNumInit;colNum<=colNumEnd;colNum++){
+                    rowColList.push({rowNum,colNum})
+                }
+            }else{
+                for (var colNum=colNumInit;colNum>=colNumEnd;colNum--){
+                    rowColList.push({rowNum,colNum})
+                }
+            }
+        }
+        return [{rowColList}]
+    }
+}
+class Result{
+    constructor(){
+        document.getElementById("getResultForm").addEventListener("click",Result.getResult);
+        document.getElementById("postResult").addEventListener("click",Result.postResult);
+    }
+    static getResult(){
+        console.log("work")
+        var form={
+            "rcpId": "558",
+            "rcpTitle": "THE PLAYER Season 1 데이브레이크 루시",
+            "ticketOpenTime": "2025년 1월 24일(금) 오후 4시",
+            "goodsCode": "L0000114",
+            "priceGradeName": "일반",
+            "placeCode": "L0000001",
+            "tmgsOrNot": "D2003",
+            "selfDefineBlock": "001",
+            "ticketOpenSite": "INPK",
+            "rowColYn": "Y",
+            "rowColGroupList": [
+                {
+                    "rowColList":[
+                    {"rowNum": 1, "colNum": 7 },
+                    {"rowNum": 1, "colNum": 8 },
+                    {"rowNum": 1, "colNum": 9 },
+                    {"rowNum": 1, "colNum": 10 },
+                    {"rowNum": 1, "colNum": 11 },
+                    {"rowNum": 1, "colNum": 12 },
+                    {"rowNum": 1, "colNum": 13 },
+                    {"rowNum": 1, "colNum": 14 },
+                    {"rowNum": 1, "colNum": 15 },
+                    {"rowNum": 1, "colNum": 16 },
+                    {"rowNum": 1, "colNum": 17 },
+                    {"rowNum": 1, "colNum": 18 },
+                    {"rowNum": 1, "colNum": 19 },
+                    {"rowNum": 1, "colNum": 20 },
+                    {"rowNum": 1, "colNum": 21 },
+                    {"rowNum": 1, "colNum": 22 }
+                ]}
+            ],
+            "playDateTime" : "2025.03.22 (토) 18시 00분",
+            "siteLoginInfo" : "JinDeul tkjoqlz.00 01099385750",
+            "bookEndCntLimit": "4", "playSeq": "001", "playSeqYn": "N",
+            "enableYn": "Y", "waitingSeatTimeoutDuration": "30m", "onlyBookInfoYn": "N",
+            "tkId": "--", "siteLoginId": "--", "siteLoginPwd": "--", "playDate": "--", "playTime": "--",
+            "playDateTimeYn": "Y", "siteLoginInfoYn": "Y",
+            "status": "ReadyForDispatch",
+            "ticketingMode": "NORMAL"
+        }
+        form.rcpTitle=document.querySelector("#title").value
+        form.ticketOpenTime=document.querySelector("#eventPeriod").value
+        form.goodsCode=SiteUrl.getProductId()
+        form.priceGradeName=document.querySelector("#discount").value
+        form.placeCode=document.querySelector("#placeId").value
+        form.trgOrNot="D2003"
+        form.selfDefineBlock=document.querySelector("#selfDefineBlock").value
+        form.ticketOpenSite="INPK"
+        form.rowColYn="Y"
+        form.rowColGroupList=RowColGroupList.getRowColGroupList()
+        form.playDateTime=document.querySelector("#playDateTime").value
+        form.siteLoginInfo=document.querySelector("#siteLoginInfo").value
+        document.querySelector("#Result").value=JSON.stringify(form, null, 2)
+    }
+    static async postResult(){
+        var result=document.querySelector("#Result").value
+        const url = "http://127.0.0.1:8080/postData";
+        var data= await fetch(url, {
+            method: "POST",
+            body: result,
+        }).then(response => {
+            return response.text();
+        }).catch(error => {
+            window.alert(["fail"]);
+        });
+        return data
+    }
+
 }
 file=new FileList()
 noti=new NotificationUrl()
 openT=new OpenTime()
 siteUrl=new SiteUrl()
 playd= new PlayDateTime()
+rowCol= new RowColGroupList()
+result = new Result()
