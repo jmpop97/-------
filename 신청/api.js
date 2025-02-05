@@ -46,7 +46,18 @@ async function saveInit(inits){
     });
     return data
 }
-
+async function saveResult(result){
+    const url = "http://127.0.0.1:8080/postData";
+    data= await fetch(url, {
+        method: "POST",
+        body: result,
+    }).then(response => {
+        return response.text();
+    }).catch(error => {
+        window.alert(["fail"]);
+    });
+    return data
+}
 async function getProductData(id){
     const url = "http://127.0.0.1:8080/productData";
     data= await fetch(url, {

@@ -317,6 +317,10 @@ bool_ids=["exclusive","openNotice"]
         div.appendChild(inputcal1)
         rowList.appendChild(div)
     }
+    function postResult(){
+        resultString=document.querySelector("#Result").value
+        saveResult(resultString)
+    }
 }   
 //input
 {
@@ -332,6 +336,7 @@ bool_ids=["exclusive","openNotice"]
     document.getElementById("post").addEventListener("click",setData);
     document.getElementById("getResultForm").addEventListener("click",getResultForm);
     document.getElementById("addRow-0").addEventListener("click",addRow);
+    document.getElementById("postResult").addEventListener("click",postResult);
 }
 
 

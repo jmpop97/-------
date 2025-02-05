@@ -27,6 +27,8 @@ var server = http.createServer(function(request,res){
       loadMoneyInit(request,res)
     }else if(url == "/money/saveInit"){
       saveMoneyJson(request,res)
+    }else if(url == "/postData"){
+      postData(request,res)
     }
     
   } catch (error) {
@@ -44,32 +46,34 @@ server.listen(8080, function(){
 
 
 //~~~~~~~~~~~~~~~~REST API function~~~~~~~~~~~~~
+function saveInitData(body){
+  body=JSON.parse(body)
+  let json = JSON.stringify(body,null,2);
+  let today = getDate()
+  console.log(today)
+  path="/initData/"+today+" "+body.title+".json"
+  path=path.replaceAll(".","_")
+  path=path.replaceAll(" ","_")
+  path="."+path
+  try {
+      fs.writeFileSync(path, json);
+    } catch (error) {
+      console.log(error)
+    }
+  return path
+}
 function saveJson(request,res){
   var body = ''
   request.on('data', function(data) {
     body += data
   })
   request.on('end', function() {
-    body=JSON.parse(body)
-    let json = JSON.stringify(body,null,2);
-    let today = getDate()
-    today=today.replaceAll(".","_")
-    today=today.replaceAll(" ","")
-    console.log(today)
-    path="./initData/"+today+" - "+body.title+".json"
-    try {
-        fs.writeFileSync(path, json);
-      } catch (error) {
-        console.log(error)
-      }
+    saveInitData(body)
 
     res.setHeader('Content-Type', 'application/json charset=utf-8')
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end("hi")
   })
-
-
-
 }
 function saveMoneyJson(request,res){
   var body = ''
@@ -190,12 +194,48 @@ function alertData(request,res){
 }
 
 //~~~~~~~~~~~~~~~~터미널~~~~~~~~~~~~~
+function savepostData(body){
+  body=JSON.parse(body)
+  let json = JSON.stringify(body,null,2);
+  let today = getDate()
+  console.log(today)
+  path="/신청/postData/"+today+" "+body.title+".json"
+  path=path.replaceAll(".","_")
+  path=path.replaceAll(" ","_")
+  path="."+path
+  try {
+      fs.writeFileSync(path, json);
+    } catch (error) {
+      console.log(error)
+    }
+  return path
+}
 function spawnTest() {
   exec('ls -al', (err,out,stderr) => { 
     console.log(out)
   });
 }
+function postData(request,res){
+    var body = ''
+    request.on('data', function(data) {
+      body += data
+    })
+    request.on('end', function() {
+      fileName = savepostData(body)
+      postTerminal(fileName)
+      res.setHeader('Content-Type', 'application/json charset=utf-8')
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.end("hi")
+    })
 
+}
+function postTerminal(fileName) {
+  // terminal=`cat InitData/${fileName} | jq . | curl -X POST -k "https://wle.kr/tkInfos" -d @-`
+  terminal=`cat ${fileName}`
+  exec(terminal, (err,out,stderr) => { 
+    console.log(out)
+  });
+}
 
 
 
