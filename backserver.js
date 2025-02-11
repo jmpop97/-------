@@ -199,7 +199,7 @@ function savepostData(body){
   let json = JSON.stringify(body,null,2);
   let today = getDate()
   console.log(today)
-  path="/신청/postData/"+today+" "+body.title+".json"
+  path="/신청/postData/"+today+" "+body.rcpTitle+".json"
   path=path.replaceAll(".","_")
   path=path.replaceAll(" ","_")
   path="."+path

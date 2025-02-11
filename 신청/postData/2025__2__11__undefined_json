@@ -1,0 +1,76 @@
+{
+  "rcpId": "558",
+  "rcpTitle": "[인] 뮤지컬 니진스키 프리뷰",
+  "ticketOpenTime": "2025년 2월 12일(수) 오후 2시",
+  "goodsCode": "25001893",
+  "priceGradeName": "일반",
+  "placeCode": "21000360",
+  "tmgsOrNot": "D2003",
+  "selfDefineBlock": "001",
+  "ticketOpenSite": "INPK",
+  "rowColYn": "Y",
+  "rowColGroupList": [
+    {
+      "rowColList": [
+        {
+          "rowNum": 1,
+          "colNum": 1
+        },
+        {
+          "rowNum": 1,
+          "colNum": 2
+        },
+        {
+          "rowNum": 1,
+          "colNum": 3
+        },
+        {
+          "rowNum": 1,
+          "colNum": 4
+        },
+        {
+          "rowNum": 1,
+          "colNum": 5
+        },
+        {
+          "rowNum": 1,
+          "colNum": 6
+        },
+        {
+          "rowNum": 1,
+          "colNum": 7
+        },
+        {
+          "rowNum": 1,
+          "colNum": 8
+        },
+        {
+          "rowNum": 1,
+          "colNum": 9
+        },
+        {
+          "rowNum": 1,
+          "colNum": 10
+        }
+      ]
+    }
+  ],
+  "playDateTime": "2025.03.27 (목) 20시 00분",
+  "siteLoginInfo": "sinlok kmj#0616 01025181905",
+  "bookEndCntLimit": "4",
+  "playSeq": "001",
+  "playSeqYn": "N",
+  "enableYn": "Y",
+  "waitingSeatTimeoutDuration": "30m",
+  "onlyBookInfoYn": "N",
+  "tkId": "--",
+  "siteLoginId": "--",
+  "siteLoginPwd": "--",
+  "playDate": "--",
+  "playTime": "--",
+  "playDateTimeYn": "Y",
+  "siteLoginInfoYn": "Y",
+  "status": "ReadyForDispatch",
+  "ticketingMode": "NORMAL",
+  "trgOrNot": "D2003"
+}

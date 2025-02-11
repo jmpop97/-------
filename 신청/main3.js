@@ -1,3 +1,31 @@
+class UserInfo{
+    constructor(){
+        document.getElementById("setUser").addEventListener("click",this.get);
+        document.getElementById("userN").addEventListener("change",UserInfo.put);
+    }
+    get(){
+        const users=JSON.parse(document.getElementById("userInfo").value)
+        
+        const sel =document.getElementById("userN")
+        sel.innerHTML=``
+        for (var key in users){
+            const opt = document.createElement("option");
+            var user =users[key]
+
+            var text=user["playDateTime"]+" | "+user["siteLoginInfo"]
+            opt.value = JSON.stringify(user);
+            opt.text = text;
+            sel.add(opt, null);
+        }
+        UserInfo.put()
+    }
+    static put(){
+        var user=JSON.parse(document.getElementById("userN").value)
+        document.getElementById("title").value=user["userTicketOpenName"]
+        document.getElementById("playDateTime").value=user["playDateTime"]
+        document.getElementById("siteLoginInfo").value=user["siteLoginInfo"]
+    }
+}
 class FileList{
     constructor(){
         this.get()
@@ -56,9 +84,13 @@ class NotificationUrl{
             return response.text();
         }).then(text => {
             const data = JSON.parse(text);
+            if (length(data)==0){
+                throw "잘못된 값"
+            }
             return data
         }).catch(error => {
             window.alert(["fail"]);
+            window.open(alertUrl)
         });
         var siteUrl=data["url"]
         delete data["url"]
@@ -69,7 +101,7 @@ class NotificationUrl{
     }
     static settingAlertData(data){
         const sel = document.getElementById("openTimeSelect");
-        self.innerHTML=``
+        sel.innerHTML=``
         for (var key in data){
             const opt = document.createElement("option");
             var value =data[key]
@@ -98,6 +130,7 @@ class SiteUrl{
     constructor(){
         document.getElementById("loadProductData").addEventListener("click",SiteUrl.get);
         document.getElementById("discountSelect").addEventListener("change",SiteUrl.clickButtun)
+        document.getElementById("firstUrl").addEventListener("click",SiteUrl.copyUrl)
     }
     static get(){
         var id=SiteUrl.getProductId()
@@ -107,8 +140,15 @@ class SiteUrl{
     static clickButtun(){
         document.querySelector("#discount").value=document.getElementById("discountSelect").value
     }
+    static copyUrl(){
+        var GoodsCode=SiteUrl.getProductId()
+        var placeCode=document.getElementById("placeId").value
+        var block=document.getElementById("selfDefineBlock").value
+        var url=`https://poticket.interpark.com/Ticket/Seat/BookingSeatDetail.asp?GoodsCode=${GoodsCode}&PlaceCode=${placeCode}&TmgsOrNot=D2003&LocOfImage=&Tiki=&BizCode=Webbr&PlaySeq=001&SessionId=&Block=${block}`
+        window.open(url)
+    }
+
     static setProduct(data){
-        document.getElementById("title").value=data["goodsName"]
         document.getElementById("place").value=data["placeName"]
         document.getElementById("placeId").value=data["placeCode"]
         if (data["specialSeatingName"]=="단독판매"){
@@ -173,39 +213,7 @@ class SiteUrl{
         return productId
     }
 }
-class PlayDateTime{
-    constructor(){
-        document.getElementById("playDateTimeSelect").addEventListener("change",PlayDateTime.clickButtun);
-    }
-    static clickButtun(){
-        document.querySelector("#playDateTime").value=document.getElementById("playDateTimeSelect").value
-    }
-    static set(data){
-        const sel = document.getElementById("playDateTimeSelect");
-        self.innerHTML=``
-        for (var key in data){
-            const opt = document.createElement("option");
-            var text=PlayDateTime.formatDateTime(data[key])
-            opt.value = text;
-            opt.text = text;
-            sel.add(opt, null);
-        }
-    }
-    static formatDateTime(dateString) {
-        const year = dateString.slice(0, 4);
-        const month = dateString.slice(4, 6);
-        const day = dateString.slice(6, 8);
-        const hour = dateString.slice(8, 10);
-        const minute = dateString.slice(10, 12);
-    
-        // 요일 계산
-        const date = new Date(`${year}-${month}-${day}`);
-        const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
-        const weekDay = weekDays[date.getDay()];
-    
-        return `${year}.${month}.${day} (${weekDay}) ${hour}시 ${minute}분`;
-    }
-}
+
 class RowColGroupList{
     constructor(){
         document.getElementById("addRow").addEventListener("click",RowColGroupList.clickButtun);
@@ -344,6 +352,6 @@ file=new FileList()
 noti=new NotificationUrl()
 openT=new OpenTime()
 siteUrl=new SiteUrl()
-playd= new PlayDateTime()
 rowCol= new RowColGroupList()
 result = new Result()
+userInfo = new UserInfo()
