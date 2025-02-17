@@ -3,6 +3,7 @@ var http = require('http');
 var https = require('https'); 
 const fs = require('fs');
 var cheerio = require('cheerio');
+const util = require("util");
 
 var initList
 var server = http.createServer(function(request,res){ 
@@ -262,7 +263,7 @@ function savepostData(body){
   let today = getDate()
   console.log(today)
   path="/신청/postData/"+today+" "+body.rcpTitle+".json"
-  path=path.replaceAll(".","_")
+  path=path.replaceAll(". ","_")
   path=path.replaceAll(" ","_")
   path="."+path
   try {
@@ -282,21 +283,26 @@ function postData(request,res){
     request.on('data', function(data) {
       body += data
     })
-    request.on('end', function() {
+    request.on('end', async function() {
       fileName = savepostData(body)
-      postTerminal(fileName)
+      result=await postTerminal(fileName)
       res.setHeader('Content-Type', 'application/json charset=utf-8')
       res.setHeader("Access-Control-Allow-Origin", "*");
-      res.end("hi")
+      res.end(result)
     })
 
 }
-function postTerminal(fileName) {
+async function postTerminal(fileName) {
   // terminal=`cat InitData/${fileName} | jq . | curl -X POST -k "https://wle.kr/tkInfos" -d @-`
   terminal=`cat ${fileName}`
-  exec(terminal, (err,out,stderr) => { 
-    console.log(out)
-  });
+  const execPromise = util.promisify(exec);
+  try {
+    const { stdout, stderr } = await execPromise(terminal);
+    console.log(stdout)
+    return stdout
+  } catch (error) {
+  }
+  return "실패"
 }
 
 

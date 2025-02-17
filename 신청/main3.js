@@ -377,6 +377,7 @@ class Result{
         }).catch(error => {
             window.alert(["fail"]);
         });
+        window.alert(data)
         return data
     }
 
