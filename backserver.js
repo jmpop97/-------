@@ -180,13 +180,15 @@ function alertData(request,res){
     body += data
   })
   request.on('end', async function() {
+    result = {}
     body=JSON.parse(body)
     try {
       result = await scheduleInfo(body.url)
+      console.log("result",result)
     }catch{
       result ={}
     }
-    
+    console.log(result)
     res.setHeader('Content-Type', 'application/json charset=utf-8')
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(JSON.stringify(result))
@@ -416,7 +418,6 @@ let today = new Date();
 // dates=[year,month,date,day]
 return today.toLocaleDateString('ko-KR')
 }
-test="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=PLAYER&no=54211&groupno=54211&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
+test="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=&no=54488&groupno=54488&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
 testId="L0000114"
-scheduleInfo(test)
 // getSiteSummary(testId)

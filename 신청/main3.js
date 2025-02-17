@@ -84,14 +84,12 @@ class NotificationUrl{
             return response.text();
         }).then(text => {
             const data = JSON.parse(text);
-            if (length(data)==0){
-                throw "잘못된 값"
-            }
             return data
         }).catch(error => {
             window.alert(["fail"]);
             window.open(alertUrl)
         });
+        console.log(data)
         var siteUrl=data["url"]
         delete data["url"]
         document.getElementById("siteUrl").value=siteUrl
@@ -154,7 +152,6 @@ class SiteUrl{
         if (data["specialSeatingName"]=="단독판매"){
             document.getElementById("exclusive").checked=true
         }
-        PlayDateTime.set(data["dates"])
     }
     static setDiscount(data){
         const sel = document.getElementById("discountSelect");
