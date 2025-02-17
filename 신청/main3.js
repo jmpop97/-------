@@ -1,37 +1,9 @@
-class UserInfo{
-    constructor(){
-        document.getElementById("setUser").addEventListener("click",this.get);
-        document.getElementById("userN").addEventListener("change",UserInfo.put);
-    }
-    get(){
-        const users=JSON.parse(document.getElementById("userInfo").value)
-        
-        const sel =document.getElementById("userN")
-        sel.innerHTML=``
-        for (var key in users){
-            const opt = document.createElement("option");
-            var user =users[key]
-
-            var text=user["playDateTime"]+" | "+user["siteLoginInfo"]
-            opt.value = JSON.stringify(user);
-            opt.text = text;
-            sel.add(opt, null);
-        }
-        UserInfo.put()
-    }
-    static put(){
-        var user=JSON.parse(document.getElementById("userN").value)
-        document.getElementById("title").value=user["userTicketOpenName"]
-        document.getElementById("playDateTime").value=user["playDateTime"]
-        document.getElementById("siteLoginInfo").value=user["siteLoginInfo"]
-    }
-}
 class FileList{
     constructor(){
         this.get()
     }
     async get(){
-        const url = "http://127.0.0.1:8080/initList";
+        const url = "http://127.0.0.1:8080/loadPostDatas";
         var data= await fetch(url, {
             method: "GET"
         }).then(response => {
@@ -62,6 +34,34 @@ class FileList{
         // });
         console.log(initlist)
 
+    }
+}
+class UserInfo{
+    constructor(){
+        document.getElementById("setUser").addEventListener("click",this.get);
+        document.getElementById("userN").addEventListener("change",UserInfo.put);
+    }
+    get(){
+        const users=JSON.parse(document.getElementById("userInfo").value)
+        
+        const sel =document.getElementById("userN")
+        sel.innerHTML=``
+        for (var key in users){
+            const opt = document.createElement("option");
+            var user =users[key]
+
+            var text=user["playDateTime"]+" | "+user["siteLoginInfo"]
+            opt.value = JSON.stringify(user);
+            opt.text = text;
+            sel.add(opt, null);
+        }
+        UserInfo.put()
+    }
+    static put(){
+        var user=JSON.parse(document.getElementById("userN").value)
+        document.getElementById("title").value=user["userTicketOpenName"]
+        document.getElementById("playDateTime").value=user["playDateTime"]
+        document.getElementById("siteLoginInfo").value=user["siteLoginInfo"]
     }
 }
 class NotificationUrl{

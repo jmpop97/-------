@@ -11,10 +11,12 @@ var server = http.createServer(function(request,res){
     console.log(url)
     if (url =="/saveInit"){
       saveJson(request,res)
-    }else if(url == "/savePostDatas"){
-      saveJsonPostInit(request,res)
     }else if(url == "/initList"){
       initList(request,res)
+    }else if(url == "/savePostDatas"){
+      saveJsonPostInit(request,res)
+    }else if(url == "/loadPostDatas"){
+      loadJsonPostInit(request,res)
     }else if(url == "/loadInit"){
       loadInit(request,res)
     }else if(url == "/productData"){
@@ -135,6 +137,13 @@ function saveMoneyJson(request,res){
 }
 function initList(request,res){
   dir="./InitData"
+  filelists=fs.readdirSync(dir)
+  res.setHeader('Content-Type', 'application/json charset=utf-8')
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.end(JSON.stringify(filelists.reverse()))
+}
+function loadJsonPostInit(request,res){
+  dir="./신청/initData"
   filelists=fs.readdirSync(dir)
   res.setHeader('Content-Type', 'application/json charset=utf-8')
   res.setHeader("Access-Control-Allow-Origin", "*");
