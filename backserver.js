@@ -367,37 +367,39 @@ async function getSitePriceGroup(id){
   return result
 }
 async function scheduleInfo(url){
+  console.log("?? : ", url)
   const res = await fetch(url)
-    buff= await res.arrayBuffer();
-    const decoder = new TextDecoder('euc-kr'); //utf-8로도 바꿔보고.., euc-kr로도 바꿔보고..
-    const text = decoder.decode(buff);
+  buff= await res.arrayBuffer();
+  const decoder = new TextDecoder('euc-kr'); //utf-8로도 바꿔보고.., euc-kr로도 바꿔보고..
+  const text = decoder.decode(buff);
     
-    var $ = cheerio.load(text);
-    var openInfo={}
-    
-    $goods =$('.btn')
-    $goods.each(function(){
-      str=$(this).html()
-      i=str.indexOf('<a href="http:')
-      str=str.substring(i+9)
+  var $ = cheerio.load(text);
+  var openInfo={}
 
-      i=str.indexOf('"')
-      str=str.substring(0,i)
-      openInfo["url"]=str
-      }
-    )
+  $goods =$('.btn')
+  $goods.each(function(){
+    str=$(this).html()
+    i=str.indexOf('<a href="http:')
+    str=str.substring(i+9)
 
-
-
-    $infos =$('.info').children("ul").children("li")
-    $infos.each(function(){
-      str=$(this).text()
-      i=str.indexOf('년')
-      value=str.substr(i-4)
-      type=str.substr(0,i-4)
-      openInfo[type]=value
-    })
-    return openInfo
+    i=str.indexOf('"')
+    str=str.substring(0,i)
+    openInfo["url"]=str
+    }
+  )
+  
+  $infos =$('.info').children("ul").children("li")
+  $infos.each(function(){
+    str=$(this).text()
+    console.log(str)
+    i=str.indexOf('년')
+    value=str.substr(i-4)
+    value=value.slice(0,-1)
+    type=str.substr(0,i-4)
+    openInfo[type]=value
+  })
+  console.log(openInfo)
+  return openInfo
 }
 // getSiteSummary()
 // getSitePriceGroup(24016737)
@@ -416,4 +418,5 @@ return today.toLocaleDateString('ko-KR')
 }
 test="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=PLAYER&no=54211&groupno=54211&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
 testId="L0000114"
+scheduleInfo(test)
 // getSiteSummary(testId)
