@@ -13,13 +13,19 @@ var server = http.createServer(function(request,res){
       saveJson(request,res)
     }else if(url == "/initList"){
       initList(request,res)
-    }else if(url == "/savePostDatas"){
-      saveJsonPostInit(request,res)
-    }else if(url == "/loadPostDatas"){
-      loadJsonPostInit(request,res)
     }else if(url == "/loadInit"){
       loadInit(request,res)
-    }else if(url == "/productData"){
+    }
+    
+    if(url == "/savePostDatas"){
+      saveJsonPostInit(request,res)
+    }else if(url == "/loadPostDatasList"){
+      loadJsonPostInitList(request,res)
+    }else if(url == "/loadPostDatas"){
+      loadPostDatasInit(request,res)
+    }
+    
+    if(url == "/productData"){
       productData(request,res)
     }else if(url == "/discountData"){
       discountData(request,res)
@@ -142,7 +148,7 @@ function initList(request,res){
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.end(JSON.stringify(filelists.reverse()))
 }
-function loadJsonPostInit(request,res){
+function loadJsonPostInitList(request,res){
   dir="./신청/initData"
   filelists=fs.readdirSync(dir)
   res.setHeader('Content-Type', 'application/json charset=utf-8')
@@ -166,6 +172,20 @@ function loadInit(request,res){
 
     body=JSON.parse(body)
     const jsonFile = fs.readFileSync('./InitData/'+body.fileName, 'utf8');
+    res.setHeader('Content-Type', 'application/json charset=utf-8')
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(jsonFile)
+  })
+}
+function loadPostDatasInit(request,res){
+  var body = ''
+  request.on('data', function(data) {
+    body += data
+  })
+  request.on('end', function() {
+
+    body=JSON.parse(body)
+    const jsonFile = fs.readFileSync('./신청/initData/'+body.fileName, 'utf8');
     res.setHeader('Content-Type', 'application/json charset=utf-8')
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(jsonFile)

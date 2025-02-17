@@ -1,9 +1,10 @@
 class FileList{
     constructor(){
         this.get()
+        document.getElementById("selectFile").addEventListener("change",this.getInit)
     }
     async get(){
-        const url = "http://127.0.0.1:8080/loadPostDatas";
+        const url = "http://127.0.0.1:8080/loadPostDatasList";
         var data= await fetch(url, {
             method: "GET"
         }).then(response => {
@@ -34,6 +35,41 @@ class FileList{
         // });
         console.log(initlist)
 
+    }
+    async getInit(){
+        var fileName=document.getElementById("selectFile").value
+        const url = "http://127.0.0.1:8080/loadPostDatas";
+        var data= await fetch(url, {
+            method: "POST",
+            body: JSON.stringify({fileName}),
+        }).then(response => {
+            return response.text();
+        }).then(text => {
+            const data = JSON.parse(text);
+            return data
+        }).catch(error => {
+            window.alert(["fail"]);
+            window.open(alertUrl)
+        });
+        FileList.setInit(data)
+    }
+    static setInit(datas){
+        document.querySelector("#userInfo").value=datas.userInfo
+        document.querySelector("#title").value=datas.title
+        document.querySelector("#playDateTime").value=datas.playDateTime
+        document.querySelector("#siteLoginInfo").value=datas.siteLoginInfo
+        document.querySelector("#notificationUrl").value=datas.notificationUrl
+        document.querySelector("#eventPeriod").value=datas.eventPeriod
+        document.querySelector("#siteUrl").value=datas.siteUrl
+        document.querySelector("#place").value=datas.place
+        document.querySelector("#placeId").value=datas.placeId
+        document.querySelector("#selfDefineBlock").value=datas.selfDefineBlock
+        document.querySelector("#exclusive").checked=datas.exclusive
+        document.querySelector("#snsUrl").value=datas.snsUrl
+        document.querySelector("#rowNum-0").value=datas.rowNum_0
+        document.querySelector("#colNum-0-0").value=datas.colNum_0_0
+        document.querySelector("#colNum-0-1").value=datas.colNum_0_1
+        document.querySelector("#Result").value=datas.Result
     }
 }
 class UserInfo{
