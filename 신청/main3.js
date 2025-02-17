@@ -345,6 +345,41 @@ class Result{
     }
 
 }
+class Button{
+    constructor(){
+        document.getElementById("saveJson").addEventListener("click",this.saveData);
+    }
+    async saveData(){
+        console.log("saveData")
+        let datas={}
+        datas.userInfo=document.querySelector("#userInfo").value
+        datas.title=document.querySelector("#title").value
+        datas.playDateTime=document.querySelector("#playDateTime").value
+        datas.siteLoginInfo=document.querySelector("#siteLoginInfo").value
+        datas.notificationUrl=document.querySelector("#notificationUrl").value
+        datas.eventPeriod=document.querySelector("#eventPeriod").value
+        datas.siteUrl=document.querySelector("#siteUrl").value
+        datas.place=document.querySelector("#place").value
+        datas.placeId=document.querySelector("#placeId").value
+        datas.selfDefineBlock=document.querySelector("#selfDefineBlock").value
+        datas.exclusive=document.querySelector("#exclusive").checked
+        datas.snsUrl=document.querySelector("#snsUrl").value
+        datas.rowNum_0=document.querySelector("#rowNum-0").value
+        datas.colNum_0_0=document.querySelector("#colNum-0-0").value
+        datas.colNum_0_1=document.querySelector("#colNum-0-1").value
+        datas.Result=document.querySelector("#Result").value
+
+        let url="http://127.0.0.1:8080/savePostDatas"
+        var data= await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(datas),
+        }).then(response => {
+            return response.text();
+        }).catch(error => {
+            window.alert(["fail"]);
+        });
+    }
+}
 file=new FileList()
 noti=new NotificationUrl()
 openT=new OpenTime()
@@ -352,3 +387,4 @@ siteUrl=new SiteUrl()
 rowCol= new RowColGroupList()
 result = new Result()
 userInfo = new UserInfo()
+button = new Button()

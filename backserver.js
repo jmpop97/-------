@@ -11,6 +11,8 @@ var server = http.createServer(function(request,res){
     console.log(url)
     if (url =="/saveInit"){
       saveJson(request,res)
+    }else if(url == "/savePostDatas"){
+      saveJsonPostInit(request,res)
     }else if(url == "/initList"){
       initList(request,res)
     }else if(url == "/loadInit"){
@@ -62,6 +64,22 @@ function saveInitData(body){
     }
   return path
 }
+function savePostInitData(body){
+  body=JSON.parse(body)
+  let json = JSON.stringify(body,null,2);
+  let today = getDate()
+  console.log(today)
+  path="/신청/initData/"+today+" "+body.title
+  path=path.replaceAll(". "," ")
+  path=path.replaceAll(" ","_")
+  path="."+path+".json"
+  try {
+      fs.writeFileSync(path, json);
+    } catch (error) {
+      console.log(error)
+    }
+  return path
+}
 function saveJson(request,res){
   var body = ''
   request.on('data', function(data) {
@@ -69,6 +87,19 @@ function saveJson(request,res){
   })
   request.on('end', function() {
     saveInitData(body)
+
+    res.setHeader('Content-Type', 'application/json charset=utf-8')
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end("hi")
+  })
+}
+function saveJsonPostInit(request,res){
+  var body = ''
+  request.on('data', function(data) {
+    body += data
+  })
+  request.on('end', function() {
+    savePostInitData(body)
 
     res.setHeader('Content-Type', 'application/json charset=utf-8')
     res.setHeader("Access-Control-Allow-Origin", "*");
