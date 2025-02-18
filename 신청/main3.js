@@ -77,10 +77,14 @@ class UserInfo{
         document.getElementById("setUser").addEventListener("click",this.get);
     }
     get(){
-        const users=JSON.parse(document.getElementById("userInfo").value)
+        const users=UserInfo.sortUser()
         UserInfo.getCheckbox(users)
         // UserInfo.getOption(users)
         // UserInfo.getRadio(users)
+    }
+    static sortUser(){
+        const users=JSON.parse(document.getElementById("userInfo").value)
+        return users.sort((a, b) => a.userHp.localeCompare(b.userHp));
     }
     static getOption(users){
         const sel =document.getElementById("userN")
@@ -420,6 +424,13 @@ class Result{
         form.rowColGroupList=RowColGroupList.getRowColGroupList()
         form.playDateTime=document.querySelector("#playDateTime").value
         form.siteLoginInfo=document.querySelector("#siteLoginInfo").value
+        
+        form.Test=false
+        try {
+            form.Test=test    
+        } catch (error) {
+        }
+        
         document.querySelector("#Result").value=JSON.stringify(form, null, 2)
     }
     static async postResult(){
@@ -463,7 +474,6 @@ class Button{
         datas.colNum_0_0=document.querySelector("#colNum-0-0").value
         datas.colNum_0_1=document.querySelector("#colNum-0-1").value
         datas.Result=document.querySelector("#Result").value
-
         let url="http://127.0.0.1:8080/savePostDatas"
         var data= await fetch(url, {
             method: "POST",

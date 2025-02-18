@@ -258,7 +258,7 @@ function alertData(request,res){
 
 //~~~~~~~~~~~~~~~~터미널~~~~~~~~~~~~~
 function savepostData(body){
-  body=JSON.parse(body)
+  
   let json = JSON.stringify(body,null,2);
   let today = getDate()
   console.log(today)
@@ -284,17 +284,22 @@ function postData(request,res){
       body += data
     })
     request.on('end', async function() {
+      body=JSON.parse(body)
       fileName = savepostData(body)
-      result=await postTerminal(fileName)
+      result=await postTerminal(fileName,body.Test)
       res.setHeader('Content-Type', 'application/json charset=utf-8')
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.end(result)
     })
 
 }
-async function postTerminal(fileName) {
+async function postTerminal(fileName,Test) {
   // terminal=`cat InitData/${fileName} | jq . | curl -X POST -k "https://wle.kr/tkInfos" -d @-`
-  terminal=`cat ${fileName}`
+  if (Test){
+    terminal=`cat ${fileName}`
+  }else{
+    terminal=`cat ${fileName} | jq . | curl -X POST -k "https://wle.kr/tkInfos" -d @-`
+  }
   const execPromise = util.promisify(exec);
   try {
     const { stdout, stderr } = await execPromise(terminal);
@@ -309,7 +314,8 @@ async function postTerminal(fileName) {
 
 //~~~~~~~~~~~~~~~~api~~~~~~~~~~~~~
 function fetchJson(options) {
-  return new Promise((resolve, reject) => {
+  try {
+    return new Promise((resolve, reject) => {
       https.get(options, (res) => {
           let data = '';
 
@@ -331,6 +337,10 @@ function fetchJson(options) {
           
       });
   });
+  } catch (error) {
+    return {}
+  }
+
 }
 
 async function getSiteSummary(id){
