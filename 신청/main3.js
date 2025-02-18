@@ -75,11 +75,14 @@ class FileList{
 class UserInfo{
     constructor(){
         document.getElementById("setUser").addEventListener("click",this.get);
-        document.getElementById("userN").addEventListener("change",UserInfo.put);
     }
     get(){
         const users=JSON.parse(document.getElementById("userInfo").value)
-        
+        UserInfo.getCheckbox(users)
+        // UserInfo.getOption(users)
+        // UserInfo.getRadio(users)
+    }
+    static getOption(users){
         const sel =document.getElementById("userN")
         sel.innerHTML=``
         for (var key in users){
@@ -93,11 +96,64 @@ class UserInfo{
         }
         UserInfo.put()
     }
+    
+    static getRadio(users){
+
+        const sel = document.getElementById("userCheck");
+        sel.innerHTML = ""; // 기존 내용 초기화
+        
+        for (var key in users) {
+            const opt = document.createElement("input");
+            opt.type = "radio";
+            opt.name = "userSelect";
+            opt.value = JSON.stringify(users[key]);
+        
+            const label = document.createElement("label");
+            label.appendChild(opt);
+            label.appendChild(document.createTextNode(users[key]["playDateTime"] + " | " + users[key]["siteLoginInfo"]));
+        
+            sel.appendChild(label);
+            // sel.appendChild(document.createElement("br")); // 줄 바꿈 추가
+        }
+        UserInfo.put()
+    }
+    static getCheckbox(users){
+        const sel = document.getElementById("userCheck");
+        sel.addEventListener("click",UserInfo.put);
+        sel.innerHTML = ""; // 기존 내용 초기화
+        
+        for (var key in users) {
+            const opt = document.createElement("input");
+            opt.type = "checkbox"; // radio → checkbox 변경
+            opt.name = "userSelect";
+            opt.value = JSON.stringify(users[key]);
+            opt.checked=true
+            const label = document.createElement("label");
+            label.appendChild(opt);
+            label.appendChild(document.createTextNode(users[key]["playDateTime"] + " | " + users[key]["siteLoginInfo"]));
+        
+            sel.appendChild(label);
+            // sel.appendChild(document.createElement("br")); // 줄 바꿈 추가
+        }
+        UserInfo.put()
+    }
     static put(){
-        var user=JSON.parse(document.getElementById("userN").value)
+        var user=JSON.parse(UserInfo.userCheckBox()[0])
         document.getElementById("title").value=user["userTicketOpenName"]
         document.getElementById("playDateTime").value=user["playDateTime"]
         document.getElementById("siteLoginInfo").value=user["siteLoginInfo"]
+    }
+    
+    static userRadio(){
+        const selectedGender = document.querySelector('input[name="gender"]:checked')?.value;
+        console.log(selectedGender);
+    }
+    static userCheckBox(){
+        const selectedValues = Array.from(document.querySelectorAll('input[name="userSelect"]:checked'))
+        .map(checkbox => checkbox.value); // 체크된 항목들의 value 값 배열 생성
+    
+        console.log(selectedValues); // 콘솔에 출력
+    return selectedValues;
     }
 }
 class NotificationUrl{
@@ -392,7 +448,9 @@ class Button{
         datas.userInfo=document.querySelector("#userInfo").value
         datas.title=document.querySelector("#title").value
         datas.playDateTime=document.querySelector("#playDateTime").value
-        datas.siteLoginInfo=document.querySelector("#siteLoginInfo").value
+        // datas.siteLoginInfo=document.querySelector("#siteLoginInfo").value
+        datas.siteLoginInfo=UserInfo.userCheckBox()[0]
+
         datas.notificationUrl=document.querySelector("#notificationUrl").value
         datas.eventPeriod=document.querySelector("#eventPeriod").value
         datas.siteUrl=document.querySelector("#siteUrl").value
