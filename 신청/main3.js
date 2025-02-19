@@ -191,6 +191,8 @@ class NotificationUrl{
         document.getElementById("siteUrl").value=siteUrl
         SiteUrl.get()
         NotificationUrl.settingAlertData(data)
+        OpenTime.set()
+        console.log("working")
             // loadProductData()
     }
     static settingAlertData(data){
@@ -214,9 +216,9 @@ class NotificationUrl{
 }
 class OpenTime{
     constructor(){
-        document.getElementById("openTimeSelect").addEventListener("change",this.set);
+        document.getElementById("openTimeSelect").addEventListener("change",OpenTime.set);
     }
-    set(){
+    static set(){
         document.getElementById("eventPeriod").value=document.getElementById("openTimeSelect").value
     }
 }
