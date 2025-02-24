@@ -434,7 +434,7 @@ async function getSitePriceGroup(id){
     seats=datas[seatsName]
     for (discounts in seats){
       discounts=seats[discounts]
-      for(discountsN in discounts){
+      for(var discountsN in discounts){
         discount=discounts[discountsN]
         result[i]=[discount["seatGradeName"],discount["priceGradeName"],discount["salesPrice"]]
         i++

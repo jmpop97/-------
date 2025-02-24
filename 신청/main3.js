@@ -480,7 +480,7 @@ class Result{
         var postUserList=UserInfo.userCheckBox()
         for (var postUserListI in postUserList){
             var user=users[UserInfo.userCheckBox()[postUserList[postUserListI]]]
-            for (i=0; i<user["time"];i++){
+            for (var i=0; i<user["time"];i++){
                 document.getElementById("title").value=user["userTicketOpenName"]
                 document.getElementById("playDateTime").value=user["playDateTime"]
                 document.getElementById("siteLoginInfo").value=user["siteLoginInfo"]
