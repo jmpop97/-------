@@ -76,19 +76,18 @@ class FileList{
         document.querySelector("#Result").value=datas.Result
     }
 }
-users={}
+users=[]
 phoneCount={}
 class UserInfo{
     constructor(){
         document.getElementById("setUser").addEventListener("click",this.get);
+        document.getElementById("addOneUser").addEventListener("click",UserInfo.addUserInfo);
     }
     get(){
         users=JSON.parse(document.getElementById("userInfo").value)
         UserInfo.getPhoneCount()
         UserInfo.sortUser()
         UserInfo.getCheckbox()
-        // UserInfo.getOption(users)
-        // UserInfo.getRadio(users)
     }
     static getPhoneCount(){
         //횟수 카운팅
@@ -119,8 +118,9 @@ class UserInfo{
     static sortUser(){
         users=users.sort((a, b) => a.userHp.localeCompare(b.userHp));
     }
-    static getCheckbox(){
+    static async getCheckbox(){
         const sel = document.getElementById("userCheck");
+        const addUserInfoSel = document.getElementById("addOneUser");
         // sel.addEventListener("click",UserInfo.put);
         sel.innerHTML = ""; // 기존 내용 초기화
         
@@ -131,7 +131,7 @@ class UserInfo{
                 opt.type = "checkbox"; // radio → checkbox 변경
                 opt.name = "userSelect";
                 opt.value = key
-                opt.checked=true
+                opt.checked = true
                 opt.addEventListener("change",()=>UserInfo.put())
     
                 const inputInfoDate = document.createElement("input")            
@@ -163,7 +163,8 @@ class UserInfo{
                 
                 sel.appendChild(label);
             }
-            setting(key,users)
+            await setting(key,users)
+            sel.appendChild(addUserInfoSel)
 
 
             // sel.appendChild(document.createElement("br")); // 줄 바꿈 추가
@@ -198,6 +199,30 @@ class UserInfo{
         const selectedValues = Array.from(document.querySelectorAll('input[name="userSelect"]:checked'))
         .map(checkbox => checkbox.value); // 체크된 항목들의 value 값 배열 생성
     return selectedValues;
+    }
+    static addUserInfo(){
+        var user={
+            "id":"1",
+            "userHp": "0",
+            "userTicketOpenName": "",
+            "#1-": null,
+            "playDateTime": "",
+            "siteLoginInfo": "",
+            "#2-": null,
+            "time": 4
+        }
+        users.push(user)
+        console.log(users)
+        var phone=user["userHp"]
+        if (phoneCount[phone]){
+            phoneCount[phone].count+=1
+            phoneCount[phone]["user"].push(user)
+        }else{
+            phoneCount[phone]={}
+            phoneCount[phone].count=1
+            phoneCount[phone]["user"]=[user]
+        }
+        UserInfo.getCheckbox()
     }
 }
 class NotificationUrl{
@@ -479,8 +504,11 @@ class Result{
     static async postMultyResult(){
         var postUserList=UserInfo.userCheckBox()
         for (var postUserListI in postUserList){
-            var user=users[UserInfo.userCheckBox()[postUserList[postUserListI]]]
+            console.log(users,postUserList)
+            var user=users[postUserList[postUserListI]]
+            console.log(user)
             for (var i=0; i<user["time"];i++){
+                var user=users[postUserList[postUserListI]]
                 document.getElementById("title").value=user["userTicketOpenName"]
                 document.getElementById("playDateTime").value=user["playDateTime"]
                 document.getElementById("siteLoginInfo").value=user["siteLoginInfo"]
