@@ -1,3 +1,7 @@
+function time(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 class FileList{
     constructor(){
         this.get()
@@ -193,7 +197,6 @@ class UserInfo{
     static userCheckBox(){
         const selectedValues = Array.from(document.querySelectorAll('input[name="userSelect"]:checked'))
         .map(checkbox => checkbox.value); // 체크된 항목들의 value 값 배열 생성
-    
     return selectedValues;
     }
 }
@@ -407,6 +410,7 @@ class Result{
     constructor(){
         document.getElementById("getResultForm").addEventListener("click",Result.getResult);
         document.getElementById("postResult").addEventListener("click",Result.postResult);
+        document.getElementById("postMultyResult").addEventListener("click",Result.postMultyResult);
     }
     static getResult(){
         console.log("work")
@@ -471,6 +475,21 @@ class Result{
         }
         
         document.querySelector("#Result").value=JSON.stringify(form, null, 2)
+    }
+    static async postMultyResult(){
+        var postUserList=UserInfo.userCheckBox()
+        for (var postUserListI in postUserList){
+            var user=users[UserInfo.userCheckBox()[postUserList[postUserListI]]]
+            for (i=0; i<user["time"];i++){
+                document.getElementById("title").value=user["userTicketOpenName"]
+                document.getElementById("playDateTime").value=user["playDateTime"]
+                document.getElementById("siteLoginInfo").value=user["siteLoginInfo"]
+                Result.getResult()
+                Result.postResult()
+                console.log(document.querySelector("#Result").value)
+                await time(2000); // 10초 대기
+            }
+        }
     }
     static async postResult(){
         var result=document.querySelector("#Result").value

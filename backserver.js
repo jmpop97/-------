@@ -260,12 +260,10 @@ function alertData(request,res){
 function savepostData(body){
   
   let json = JSON.stringify(body,null,2);
-  let today = getDate()
-  console.log(today)
-  path="/신청/postData/"+today+" "+body.rcpTitle+".json"
-  path=path.replaceAll(". ","_")
+  path=body.playDateTime+body.rcpTitle+body.siteLoginInfo
+  path=path.replace(/[^a-zA-Z0-9가-힣/]/g, '_');
   path=path.replaceAll(" ","_")
-  path="."+path
+  path="./신청/postData/"+path+".json"
   try {
       fs.writeFileSync(path, json);
     } catch (error) {
@@ -295,6 +293,7 @@ function postData(request,res){
 }
 async function postTerminal(fileName,Test) {
   // terminal=`cat InitData/${fileName} | jq . | curl -X POST -k "https://wle.kr/tkInfos" -d @-`
+  console.log(fileName)
   if (Test){
     terminal=`cat ${fileName}`
   }else{
