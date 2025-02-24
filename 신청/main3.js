@@ -102,6 +102,7 @@ class UserInfo{
                 phoneCount[phone]["user"]=[users[i]]
             }
             users[i]["time"]=0
+            users[i]["checked"]=true
         }
         //4개 잘 나눠기
         for (var phoneCountI in phoneCount){
@@ -131,8 +132,9 @@ class UserInfo{
                 opt.type = "checkbox"; // radio → checkbox 변경
                 opt.name = "userSelect";
                 opt.value = key
-                opt.checked = true
+                opt.checked = users[key]["checked"]
                 opt.addEventListener("change",()=>UserInfo.put())
+                opt.addEventListener("change",()=>users[key]["checked"]=opt.checked)
     
                 const inputInfoDate = document.createElement("input")            
                 inputInfoDate.value =users[key]["playDateTime"]
@@ -209,7 +211,8 @@ class UserInfo{
             "playDateTime": "",
             "siteLoginInfo": "",
             "#2-": null,
-            "time": 4
+            "time": 4,
+            "checked":true
         }
         users.push(user)
         console.log(users)
