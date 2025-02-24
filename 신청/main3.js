@@ -72,77 +72,115 @@ class FileList{
         document.querySelector("#Result").value=datas.Result
     }
 }
+users={}
+phoneCount={}
 class UserInfo{
     constructor(){
         document.getElementById("setUser").addEventListener("click",this.get);
     }
     get(){
-        const users=UserInfo.sortUser()
-        UserInfo.getCheckbox(users)
+        users=JSON.parse(document.getElementById("userInfo").value)
+        UserInfo.getPhoneCount()
+        UserInfo.sortUser()
+        UserInfo.getCheckbox()
         // UserInfo.getOption(users)
         // UserInfo.getRadio(users)
     }
+    static getPhoneCount(){
+        //횟수 카운팅
+        for (var i in users){
+            var phone=users[i]["userHp"]
+            if (phoneCount[phone]){
+                phoneCount[phone].count+=1
+                phoneCount[phone]["user"].push(users[i])
+            }else{
+                phoneCount[phone]={}
+                phoneCount[phone].count=1
+                phoneCount[phone]["user"]=[users[i]]
+            }
+            users[i]["time"]=0
+        }
+        //4개 잘 나눠기
+        for (var phoneCountI in phoneCount){
+            var phone =phoneCount[phoneCountI]
+            for (var count=0;count<4;count++){
+                // console.log(phone.user[0])
+                // console.log(phone.count)
+                var addUser =phone.user[count%phone.count]
+                addUser.time+=1
+                console.log(addUser)
+            }
+        }
+    }
     static sortUser(){
-        const users=JSON.parse(document.getElementById("userInfo").value)
-        return users.sort((a, b) => a.userHp.localeCompare(b.userHp));
+        users=users.sort((a, b) => a.userHp.localeCompare(b.userHp));
     }
-    static getOption(users){
-        const sel =document.getElementById("userN")
-        sel.innerHTML=``
-        for (var key in users){
-            const opt = document.createElement("option");
-            var user =users[key]
-
-            var text=user["playDateTime"]+" | "+user["siteLoginInfo"]
-            opt.value = JSON.stringify(user);
-            opt.text = text;
-            sel.add(opt, null);
-        }
-        UserInfo.put()
-    }
+    static getCheckbox(){
+        const sel = document.getElementById("userCheck");
+        // sel.addEventListener("click",UserInfo.put);
+        sel.innerHTML = ""; // 기존 내용 초기화
+        
+        for (var key in users) {
+            const setting=(key,users)=>{
+                const label = document.createElement("label");
+                const opt = document.createElement("input");
+                opt.type = "checkbox"; // radio → checkbox 변경
+                opt.name = "userSelect";
+                opt.value = key
+                opt.checked=true
+                opt.addEventListener("change",()=>UserInfo.put())
     
-    static getRadio(users){
+                const inputInfoDate = document.createElement("input")            
+                inputInfoDate.value =users[key]["playDateTime"]
+                inputInfoDate.id="loginInfoDate_"+key
+                inputInfoDate.className = "loginInfoDate"
+                inputInfoDate.addEventListener("change",()=>UserInfo.changeDate(inputInfoDate,key))
+    
+                const inputInfo = document.createElement("input")            
+                inputInfo.value =users[key]["siteLoginInfo"]
+                inputInfo.id="loginInfo_"+key
+                inputInfo.className = "loginInfoInput"
+                inputInfo.addEventListener("change",()=>UserInfo.changeloginInfo(inputInfo,key))
+    
+    
+                const inputInfoTimes = document.createElement("input")
+                inputInfoTimes.type="number"
+                inputInfoTimes.value=users[key]["time"]
+                inputInfo.id="loginInfoNumber_"+key
+                inputInfoTimes.addEventListener("change",()=>UserInfo.changeTimes(inputInfoTimes,key))
 
-        const sel = document.getElementById("userCheck");
-        sel.innerHTML = ""; // 기존 내용 초기화
-        
-        for (var key in users) {
-            const opt = document.createElement("input");
-            opt.type = "radio";
-            opt.name = "userSelect";
-            opt.value = JSON.stringify(users[key]);
-        
-            const label = document.createElement("label");
-            label.appendChild(opt);
-            label.appendChild(document.createTextNode(users[key]["playDateTime"] + " | " + users[key]["siteLoginInfo"]));
-        
-            sel.appendChild(label);
+    
+    
+                label.appendChild(opt);
+                label.appendChild(inputInfoDate);
+                label.appendChild(inputInfo);
+                label.appendChild(inputInfoTimes);
+                
+                
+                sel.appendChild(label);
+            }
+            setting(key,users)
+
+
             // sel.appendChild(document.createElement("br")); // 줄 바꿈 추가
         }
         UserInfo.put()
     }
-    static getCheckbox(users){
-        const sel = document.getElementById("userCheck");
-        sel.addEventListener("click",UserInfo.put);
-        sel.innerHTML = ""; // 기존 내용 초기화
-        
-        for (var key in users) {
-            const opt = document.createElement("input");
-            opt.type = "checkbox"; // radio → checkbox 변경
-            opt.name = "userSelect";
-            opt.value = JSON.stringify(users[key]);
-            opt.checked=true
-            const label = document.createElement("label");
-            label.appendChild(opt);
-            label.appendChild(document.createTextNode(users[key]["playDateTime"] + " | " + users[key]["siteLoginInfo"]));
-        
-            sel.appendChild(label);
-            // sel.appendChild(document.createElement("br")); // 줄 바꿈 추가
-        }
+    static changeDate(el,key){
+        users[key]["playDateTime"]=el.value
+        UserInfo.put()
+    }
+    static changeloginInfo(el,key){
+        users[key]["siteLoginInfo"]=el.value
+        UserInfo.put()
+    }
+    static changeTimes(el,key){
+        users[key]["time"]=el.value
         UserInfo.put()
     }
     static put(){
-        var user=JSON.parse(UserInfo.userCheckBox()[0])
+        var user=users[UserInfo.userCheckBox()[0]]
+        console.log(users)
         document.getElementById("title").value=user["userTicketOpenName"]
         document.getElementById("playDateTime").value=user["playDateTime"]
         document.getElementById("siteLoginInfo").value=user["siteLoginInfo"]
@@ -156,7 +194,6 @@ class UserInfo{
         const selectedValues = Array.from(document.querySelectorAll('input[name="userSelect"]:checked'))
         .map(checkbox => checkbox.value); // 체크된 항목들의 value 값 배열 생성
     
-        console.log(selectedValues); // 콘솔에 출력
     return selectedValues;
     }
 }
