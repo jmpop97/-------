@@ -377,62 +377,177 @@ class SiteUrl{
     }
 }
 
-class RowColGroupList{
+class TicketingMode{
     constructor(){
-        document.getElementById("addRow").addEventListener("click",RowColGroupList.clickButtun);
+        document.querySelector("#ticketingModeSelect").addEventListener("change",TicketingMode.createForm)
+        TicketingMode.createForm()
+        document.getElementById("test").addEventListener("click",TicketingMode.values)
     }
-    static clickButtun(){
-        var rowList=document.querySelector("#rowColGroupList")
-        var i=(rowList.children.length)
+    static createForm(){
+        var select = document.querySelector("#ticketingModeSelect").value
+        var selectForm={
+            NORMAL:RowColGroupList,
+            BMBI:SeatInfoGroupListForBMBI
+        }
+       var form=selectForm[select]
+       form.createForm()
+    }
+    static values(){
+        var select = document.querySelector("#ticketingModeSelect").value
+        var selectForm={
+            NORMAL:RowColGroupList,
+            BMBI:SeatInfoGroupListForBMBI
+        }
+       var value=selectForm[select].value()
+       return value
+    }
+}
+class SeatInfoGroupListForBMBI{
+    static createForm(){
+        var el = document.getElementById("modeForm");
+        el.innerHTML = `
+            <label for="SeatInfoGroupListForBMBI">SeatInfoGroupListForBMBI:</label>
+            <input type="text" id="SeatInfoForm" value ='{"seatGrade":"1","floor":" ","rowNo":"A열","seatNo":"10","blockNo":"001"}'></input>
+            <button type="button" id="SeatInfoGroupListForBMBIButton">추가하기</button>
+            <div id="SeatInfoFormList"></div>
+        `;
+        SeatInfoGroupListForBMBI.createFormDic()
+        var SeatInfoGroupListForBMBIButton= document.querySelector("#SeatInfoGroupListForBMBIButton")
+        SeatInfoGroupListForBMBIButton.addEventListener("click",SeatInfoGroupListForBMBI.createFormEl)
+    }
+    static createFormDic(){
+        var stringValue=document.getElementById("SeatInfoForm").value
+        var ValueDic=JSON.parse(stringValue)
+        var formInit=document.querySelector("#SeatInfoFormList")
         const div = document.createElement("div");
         div.className="seatField"
-        div.ariaValueText=i
-
-        const labelrow = document.createElement("label");
-        labelrow.innerText="rowNum"
-        const inputrow = document.createElement("input");
-        inputrow.type="number"
-        inputrow.id="rowNum-"+i
-        inputrow.value=1
-        const labelcal0 = document.createElement("label");
-        labelcal0.innerText="colNumStart"
-        const inputcal0 = document.createElement("input");
-        inputcal0.type="number"
-        inputcal0.id="rowNum-"+i+"-"+0
-        const labelcal1 = document.createElement("label");
-        labelcal1.innerText="colNumEnd"
-        const inputcal1 = document.createElement("input");
-        inputcal1.type="number"
-        inputcal1.id="rowNum-"+i+"-"+1
-
-        div.appendChild(labelrow)
-        div.appendChild(inputrow)        
-        div.appendChild(labelcal0)
-        div.appendChild(inputcal0)
-        div.appendChild(labelcal1)
-        div.appendChild(inputcal1)
-        rowList.appendChild(div)
+        for(var keyDIc in ValueDic){
+            SeatInfoGroupListForBMBI.createFormEl(keyDIc,ValueDic[keyDIc],div)
+            console.log(keyDIc)
+        }
+        formInit.appendChild(div)
     }
-    static getRowColGroupList(){
-        var rowList=document.querySelector("#rowColGroupList").children
+    static createFormEl(key,value,div){
+        var type="number"
+        if (isNaN(value)||value==""||value[0]==0){
+            console.log(key,value)
+            type=""
+        }
+        const label = document.createElement("label");
+        label.innerText=key
+        const inputInit = document.createElement("input");
+        div.appendChild(label)
+        inputInit.value=value
+        inputInit.type=type
+        if (type!="number"){
+            inputInit.className="SeatInfoGroupListForBMBIStringInput"
+        }
+        div.appendChild(inputInit)
+        if (type=="number"){
+            const inputEnd = document.createElement("input");
+            inputEnd.value=value
+            inputEnd.type=type
+            div.appendChild(inputEnd)   
+        }
+
+        
+    }
+    static value(){
+        console.log("SeatInfoGroupListForBMBI")
+    }
+}
+rowRangeList=[{check:true,row:1,col1:1,col2:1}]
+class RowColGroupList{
+    static createForm(){
+        var el = document.getElementById("modeForm");
+        el.innerHTML = `
+            <div id="rowColGroupList">
+            </div>
+            <button id="addRow" type="button">좌석 추가</button>
+        `;
+        document.getElementById("addRow").addEventListener("click",RowColGroupList.add);
+        RowColGroupList.setRowRangeList()
+    }
+    static setRowRangeList(){
+        var rowList=document.querySelector("#rowColGroupList")
+        rowList.innerHTML=''
+        for(var rowRangeListI in rowRangeList){ 
+            const setting=(rowRangeListI,rowRangeList)=>{
+                var rowRange=rowRangeList[rowRangeListI]
+            
+                const label = document.createElement("label");
+                label.className="RowColGroupList"
+                const opt = document.createElement("input");
+                opt.type = "checkbox";
+                opt.name = "seatSelect";
+                opt.checked = rowRange.check
+                opt.addEventListener("click",()=>{
+                    rowRangeList[rowRangeListI].check=opt.checked
+                    console.log(rowRangeList)
+                })
+    
+                const rowtext = document.createElement("div")
+                rowtext.textContent="rowNum"
+                const row = document.createElement("input")
+                row.type = "number"
+                row.value =rowRange.row
+                row.addEventListener("change",()=>{
+                    rowRangeList[rowRangeListI].row=Number(row.value)
+                })
+    
+                const coltext = document.createElement("div")
+                coltext.textContent="colNum"
+                const col1 = document.createElement("input")
+                col1.type = "number"
+                col1.value =rowRange.col1
+                col1.addEventListener("change",()=>{
+                    rowRangeList[rowRangeListI].col1=Number(col1.value)
+                })
+                const to = document.createElement("div")
+                to.textContent="to"      
+                const col2 = document.createElement("input")
+                col2.type = "number"
+                col2.value =rowRange.col2
+                col2.addEventListener("change",()=>{
+                    rowRangeList[rowRangeListI].col2=Number(col2.value)
+                })
+    
+                label.appendChild(opt)
+                label.appendChild(rowtext)
+                label.appendChild(row)
+                label.appendChild(coltext)
+                label.appendChild(col1)
+                label.appendChild(to)
+                label.appendChild(col2)
+    
+                rowList.appendChild(label)
+            }
+            setting(rowRangeListI,rowRangeList)
+        }
+    }
+    static add(){
+        var rowRange=rowRangeList[rowRangeList.length-1]
+        var newrowRange={
+            check:true,row:rowRange.row,col1:rowRange.col1,col2:rowRange.col2
+        }
+        rowRangeList.push(newrowRange)
+        RowColGroupList.setRowRangeList()
+    }
+    static value(){
         var rowColList=[]
-        for (var i=0;i<rowList.length;i++){
-            var detailList=rowList[i]
-            var rowNum=Number(detailList.children[1].value)
-            var colNumInit=Number(detailList.children[3].value)
-            var colNumEnd=Number(detailList.children[5].value)
-            if (colNumInit<=colNumEnd){
-                for (var colNum=colNumInit;colNum<=colNumEnd;colNum++){
-                    rowColList.push({rowNum,colNum})
-                }
-            }else{
-                for (var colNum=colNumInit;colNum>=colNumEnd;colNum--){
-                    rowColList.push({rowNum,colNum})
+        for (var rowRangeListI in rowRangeList){
+            var rowRange = rowRangeList[rowRangeListI]
+            if (rowRange.check){
+                var min=Math.min(rowRange.col1,rowRange.col2)
+                var max=Math.max(rowRange.col1,rowRange.col2)
+                for (var count=min;count<=max;count++){
+                    rowColList.push({rowNum:rowRange.row,colNum:count})
                 }
             }
         }
-        return [{rowColList}]
+        return {rowColGroupList:[{rowColList}]}
     }
+
 }
 class Result{
     constructor(){
@@ -441,7 +556,6 @@ class Result{
         document.getElementById("postMultyResult").addEventListener("click",Result.postMultyResult);
     }
     static getResult(){
-        console.log("work")
         var form={
             "rcpId": "558",
             "rcpTitle": "THE PLAYER Season 1 데이브레이크 루시",
@@ -453,27 +567,6 @@ class Result{
             "selfDefineBlock": "001",
             "ticketOpenSite": "INPK",
             "rowColYn": "Y",
-            "rowColGroupList": [
-                {
-                    "rowColList":[
-                    {"rowNum": 1, "colNum": 7 },
-                    {"rowNum": 1, "colNum": 8 },
-                    {"rowNum": 1, "colNum": 9 },
-                    {"rowNum": 1, "colNum": 10 },
-                    {"rowNum": 1, "colNum": 11 },
-                    {"rowNum": 1, "colNum": 12 },
-                    {"rowNum": 1, "colNum": 13 },
-                    {"rowNum": 1, "colNum": 14 },
-                    {"rowNum": 1, "colNum": 15 },
-                    {"rowNum": 1, "colNum": 16 },
-                    {"rowNum": 1, "colNum": 17 },
-                    {"rowNum": 1, "colNum": 18 },
-                    {"rowNum": 1, "colNum": 19 },
-                    {"rowNum": 1, "colNum": 20 },
-                    {"rowNum": 1, "colNum": 21 },
-                    {"rowNum": 1, "colNum": 22 }
-                ]}
-            ],
             "playDateTime" : "2025.03.22 (토) 18시 00분",
             "siteLoginInfo" : "JinDeul tkjoqlz.00 01099385750",
             "bookEndCntLimit": "4", "playSeq": "001", "playSeqYn": "N",
@@ -492,7 +585,6 @@ class Result{
         form.selfDefineBlock=document.querySelector("#selfDefineBlock").value
         form.ticketOpenSite="INPK"
         form.rowColYn="Y"
-        form.rowColGroupList=RowColGroupList.getRowColGroupList()
         form.playDateTime=document.querySelector("#playDateTime").value
         form.siteLoginInfo=document.querySelector("#siteLoginInfo").value
         
@@ -501,7 +593,9 @@ class Result{
             form.Test=test    
         } catch (error) {
         }
-        
+        var seatForm=TicketingMode.values()
+        Object.assign(form,seatForm)
+
         document.querySelector("#Result").value=JSON.stringify(form, null, 2)
     }
     static async postMultyResult(){
@@ -582,3 +676,4 @@ rowCol= new RowColGroupList()
 result = new Result()
 userInfo = new UserInfo()
 button = new Button()
+ticketingMode = new TicketingMode()
