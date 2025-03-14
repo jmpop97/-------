@@ -686,7 +686,7 @@ class Result{
         document.querySelector("#Result").value=JSON.stringify(form, null, 2)
     }
     static async postMultyResult(){
-        console.log("postMultyResult")
+        alert("보내기 start")
         var postUserList=UserInfo.userCheckBox()
         for (var postUserListI in postUserList){
             console.log(users,postUserList)
@@ -703,6 +703,7 @@ class Result{
                 await time(2000); // 10초 대기
             }
         }
+        alert("보내기 end")
     }
     static async postResult(){
         var result=document.querySelector("#Result").value
@@ -716,7 +717,6 @@ class Result{
             window.alert(["fail"]);
         });
         if (data.includes(`"enableYn":"Y"`)){
-            console.log(data)
         }else{
             console.error(data)
         }
@@ -729,6 +729,7 @@ class Button{
         document.getElementById("saveJson").addEventListener("click",this.saveData);
     }
     async saveData(){
+        alter("startSave")
         console.log("saveData")
         let datas={}
         datas.userInfo=document.querySelector("#userInfo").value
@@ -758,6 +759,8 @@ class Button{
         }).catch(error => {
             window.alert(["fail"]);
         });
+        alter("endSave")
+
     }
 }
 file=new FileList()

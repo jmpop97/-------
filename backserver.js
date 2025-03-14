@@ -294,12 +294,12 @@ function postData(request,res){
 async function postTerminal(fileName,Test) {
   // terminal=`cat InitData/${fileName} | jq . | curl -X POST -k "https://wle.kr/tkInfos" -d @-`
   console.log(fileName)
-  if (Test){
-    console.log("test")
-    terminal=`cat ${fileName} | jq . | curl -X POST -k "https://wle.kr/tkInfos" -d @-`
-  }else{
+  if (Test !="Y"){
     console.log("post")
     terminal=`cat ${fileName} | jq . | curl -X POST -k "https://wle.kr/tkInfos" -d @-`
+  }else{
+    console.log("test")
+    terminal=`cat ${fileName}`
   }
   const execPromise = util.promisify(exec);
   try {
