@@ -23,7 +23,6 @@ class FileList{
         return data
     }
     set(initlist){
-        console.log(initlist)
         var selector=document.getElementById("selectFile")
         selector.innerHTML=''
         for (var i in initlist){
@@ -37,7 +36,6 @@ class FileList{
         // sel.addEventListener("change", function() {
         //     getInit(document.getElementById("selectFile").value)
         // });
-        console.log(initlist)
 
     }
     async getInit(){
@@ -112,7 +110,7 @@ class UserInfo{
                 // console.log(phone.count)
                 var addUser =phone.user[count%phone.count]
                 addUser.time+=1
-                console.log(addUser)
+
             }
         }
     }
@@ -187,7 +185,6 @@ class UserInfo{
     }
     static put(){
         var user=users[UserInfo.userCheckBox()[0]]
-        console.log(users)
         document.getElementById("title").value=user["userTicketOpenName"]
         document.getElementById("playDateTime").value=user["playDateTime"]
         document.getElementById("siteLoginInfo").value=user["siteLoginInfo"]
@@ -498,7 +495,6 @@ class SeatInfoGroupListForBMBI{
             console.log(result)
             seatInfoInternalList=[...seatInfoInternalList,...result]
         }
-        console.log(seatInfoInternalList)
         return {seatInfoGroupListForBMBI:[{seatInfoInternalList}]}
     }
 }
@@ -675,6 +671,7 @@ class Result{
         form.rowColYn="Y"
         form.playDateTime=document.querySelector("#playDateTime").value
         form.siteLoginInfo=document.querySelector("#siteLoginInfo").value
+        form.ticketingMode=document.querySelector("#ticketingModeSelect").value
         
         form.Test=false
         try {
@@ -716,7 +713,11 @@ class Result{
         }).catch(error => {
             window.alert(["fail"]);
         });
-        window.alert(data)
+        if (data.includes(`"enableYn":"Y"`)){
+            console.log(data)
+        }else{
+            console.error(data)
+        }
         return data
     }
 
