@@ -489,11 +489,13 @@ class SeatInfoGroupListForBMBI{
         var seatInfoInternalList=[]
         for (var BMBIRangeListI in BMBIRangeList){
             var BMBIRange=BMBIRangeList[BMBIRangeListI]
-            var keys=Object.keys(BMBIRange)
-            var result=expandRanges(BMBIRange)
-            var result=cartesianProduct(result)
-            console.log(result)
-            seatInfoInternalList=[...seatInfoInternalList,...result]
+            if (BMBIRange.check){
+                var result=expandRanges(BMBIRange)
+                var result=cartesianProduct(result)
+                console.log(result)
+                seatInfoInternalList=[...seatInfoInternalList,...result]
+
+            }
         }
         return {seatInfoGroupListForBMBI:[{seatInfoInternalList}]}
     }
