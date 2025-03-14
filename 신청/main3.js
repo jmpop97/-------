@@ -285,22 +285,29 @@ class SiteUrl{
     constructor(){
         document.getElementById("loadProductData").addEventListener("click",SiteUrl.get);
         document.getElementById("discountSelect").addEventListener("change",SiteUrl.clickButtun)
-        document.getElementById("firstUrl").addEventListener("click",SiteUrl.copyUrl)
+        document.getElementById("firstUrl").addEventListener("click",SiteUrl.getImg)
+        document.getElementById("selfDefineBlock").addEventListener("change",SiteUrl.getImg)
     }
-    static get(){
+    static async get(){
         var id=SiteUrl.getProductId()
-        SiteUrl.getProduct(id)
-        SiteUrl.getDiscountData(id)
+        await SiteUrl.getProduct(id)
+        await SiteUrl.getDiscountData(id)
+        SiteUrl.getImg()
     }
     static clickButtun(){
         document.querySelector("#discount").value=document.getElementById("discountSelect").value
     }
-    static copyUrl(){
+    static getImg(){
+        console.log("work")
         var GoodsCode=SiteUrl.getProductId()
         var placeCode=document.getElementById("placeId").value
         var block=document.getElementById("selfDefineBlock").value
         var url=`https://poticket.interpark.com/Ticket/Seat/BookingSeatDetail.asp?GoodsCode=${GoodsCode}&PlaceCode=${placeCode}&TmgsOrNot=D2003&LocOfImage=&Tiki=&BizCode=Webbr&PlaySeq=001&SessionId=&Block=${block}`
-        window.open(url)
+        
+        var img=document.getElementById("imgPath")
+        img.src=url
+        img.width="100%"
+        img.height="300"
     }
 
     static setProduct(data){
@@ -733,10 +740,11 @@ class Button{
         console.log("saveData")
         let datas={}
         datas.userInfo=document.querySelector("#userInfo").value
+        datas.users=users
+
         datas.title=document.querySelector("#title").value
         datas.playDateTime=document.querySelector("#playDateTime").value
-        // datas.siteLoginInfo=document.querySelector("#siteLoginInfo").value
-        datas.siteLoginInfo=UserInfo.userCheckBox()[0]
+        datas.siteLoginInfo=document.querySelector("#siteLoginInfo").value
 
         datas.notificationUrl=document.querySelector("#notificationUrl").value
         datas.eventPeriod=document.querySelector("#eventPeriod").value
@@ -750,6 +758,9 @@ class Button{
         datas.colNum_0_0=document.querySelector("#colNum-0-0").value
         datas.colNum_0_1=document.querySelector("#colNum-0-1").value
         datas.Result=document.querySelector("#Result").value
+        datas.BMBIRangeList=BMBIRangeList
+        datas.rowRangeList=rowRangeList
+        datas.seatForm=TicketingMode.values()
         let url="http://127.0.0.1:8080/savePostDatas"
         var data= await fetch(url, {
             method: "POST",
