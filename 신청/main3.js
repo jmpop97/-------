@@ -274,12 +274,6 @@ class NotificationUrl{
             opt.text = text;
             sel.add(opt, null);
         }
-            // const opt = document.createElement("option");
-            // value ="수정중입니다."
-            // text=수정중입니다+" | "+value
-            // opt.value = value;
-            // opt.text = text;
-            // sel.add(opt, null);
     }
 }
 class OpenTime{
@@ -402,60 +396,145 @@ class TicketingMode{
        return value
     }
 }
+BMBIRangeList=[]
 class SeatInfoGroupListForBMBI{
     static createForm(){
         var el = document.getElementById("modeForm");
         el.innerHTML = `
             <label for="SeatInfoGroupListForBMBI">SeatInfoGroupListForBMBI:</label>
             <input type="text" id="SeatInfoForm" value ='{"seatGrade":"1","floor":" ","rowNo":"A열","seatNo":"10","blockNo":"001"}'></input>
-            <button type="button" id="SeatInfoGroupListForBMBIButton">추가하기</button>
             <div id="SeatInfoFormList"></div>
-        `;
-        SeatInfoGroupListForBMBI.createFormDic()
+            <button type="button" id="SeatInfoGroupListForBMBIButton">추가하기</button>
+        `
         var SeatInfoGroupListForBMBIButton= document.querySelector("#SeatInfoGroupListForBMBIButton")
-        SeatInfoGroupListForBMBIButton.addEventListener("click",SeatInfoGroupListForBMBI.createFormEl)
+        SeatInfoGroupListForBMBIButton.addEventListener("click",SeatInfoGroupListForBMBI.add)
     }
-    static createFormDic(){
-        var stringValue=document.getElementById("SeatInfoForm").value
-        var ValueDic=JSON.parse(stringValue)
-        var formInit=document.querySelector("#SeatInfoFormList")
-        const div = document.createElement("div");
-        div.className="seatField"
-        for(var keyDIc in ValueDic){
-            SeatInfoGroupListForBMBI.createFormEl(keyDIc,ValueDic[keyDIc],div)
-            console.log(keyDIc)
+    static add(){
+        var jsonData=JSON.parse(document.querySelector("#SeatInfoForm").value)
+        var jsonData=JSON.parse(document.querySelector("#SeatInfoForm").value)
+        jsonData=Object.fromEntries(
+            Object.entries(jsonData).map(([key, value]) => {
+                // value가 문자열이며, 숫자로 변환 가능하고, 0으로 시작하지 않으면 변환
+                if (typeof value === "string" && /^\d+$/.test(value) && !value.startsWith("0")) {
+                    return [key, [Number(value), Number(value)]];
+                }
+                return [key, value];
+            })
+        );
+        jsonData={check:true,...jsonData}
+        console.log(jsonData)
+        BMBIRangeList.push(jsonData)
+        SeatInfoGroupListForBMBI.setBMBIRangeList()
+    }
+    static setBMBIRangeList(){
+        var seatList=document.querySelector("#SeatInfoFormList")
+        seatList.innerHTML=''
+        for(var BMBIRangeListI in BMBIRangeList){
+            const label = document.createElement("label");
+            label.className="BMBIRange"
+
+            const setting=(BMBIRangeListI,BMBIRangeList)=>{
+                var BMBIRange=BMBIRangeList[BMBIRangeListI]
+                for (var key in BMBIRange){
+                    SeatInfoGroupListForBMBI.createFormEl(key,BMBIRange[key],label,BMBIRangeListI)
+                }
+                seatList.appendChild(label)
+            }
+            setting(BMBIRangeListI,BMBIRangeList)
         }
-        formInit.appendChild(div)
     }
-    static createFormEl(key,value,div){
-        var type="number"
-        if (isNaN(value)||value==""||value[0]==0){
-            console.log(key,value)
-            type=""
+    static createFormEl(key,value,div,i){
+        if (key=="check"){
+            const check =document.createElement("input")
+            check.type="checkbox"
+            check.checked = value
+            check.addEventListener("click",()=>{
+                BMBIRangeList[i].check=check.checked
+            })
+            div.appendChild(check)
+            return
+        }
+
+        var type="string"
+        if (Array.isArray(value)){
+            type="number"
         }
         const label = document.createElement("label");
         label.innerText=key
         const inputInit = document.createElement("input");
         div.appendChild(label)
-        inputInit.value=value
         inputInit.type=type
         if (type!="number"){
-            inputInit.className="SeatInfoGroupListForBMBIStringInput"
-        }
-        div.appendChild(inputInit)
-        if (type=="number"){
-            const inputEnd = document.createElement("input");
-            inputEnd.value=value
-            inputEnd.type=type
-            div.appendChild(inputEnd)   
-        }
+            inputInit.value=value
 
-        
+            inputInit.className="SeatInfoGroupListForBMBIStringInput"
+            inputInit.addEventListener("change",()=>{
+                BMBIRangeList[i][key]=inputInit.value
+            })
+            div.appendChild(inputInit)
+            return
+        }
+        inputInit.value=value[0]
+        inputInit.addEventListener("change",()=>{
+            BMBIRangeList[i][key][0]=Number(inputInit.value)
+        })
+        div.appendChild(inputInit)
+
+        const inputEnd = document.createElement("input");
+        inputEnd.value=value[1]
+        inputEnd.type=type
+        inputEnd.addEventListener("change",()=>{
+            BMBIRangeList[i][key][1]=Number(inputEnd.value)
+        })
+        div.appendChild(inputEnd)   
     }
     static value(){
-        console.log("SeatInfoGroupListForBMBI")
+        var seatInfoInternalList=[]
+        for (var BMBIRangeListI in BMBIRangeList){
+            var BMBIRange=BMBIRangeList[BMBIRangeListI]
+            var keys=Object.keys(BMBIRange)
+            var result=expandRanges(BMBIRange)
+            var result=cartesianProduct(result)
+            console.log(result)
+            seatInfoInternalList=[...seatInfoInternalList,...result]
+        }
+        console.log(seatInfoInternalList)
+        return {seatInfoGroupListForBMBI:[{seatInfoInternalList}]}
     }
 }
+function cartesianProduct(obj) {
+  const keys = Object.keys(obj);
+  const values = Object.values(obj);
+  return values.reduce((acc, curr) =>
+    acc.flatMap(a => {
+         return curr.map(b => {
+            return ({ ...a, [keys[acc[0] ? Object.keys(a).length : 0]]: b })
+        })
+        })
+  , [{}]);
+}
+function expandRanges(obj) {
+    const expanded = {};
+    for (const key in obj) { 
+      if (Array.isArray(obj[key]) && obj[key].length === 2) {
+        const [start, end] = obj[key];
+        const valueList=[]
+        if (start<=end){
+            for(var count=start;count<=end;count++){
+                valueList.push(String(count))
+            }
+        }else{
+            for(var count=start;count>=end;count--){
+                valueList.push(String(count))
+            }
+        }
+        expanded[key] = valueList
+      } else {
+        expanded[key] = [obj[key]];
+      }
+    }
+    return expanded;
+  }
 rowRangeList=[{check:true,row:1,col1:1,col2:1}]
 class RowColGroupList{
     static createForm(){
@@ -538,11 +617,20 @@ class RowColGroupList{
         for (var rowRangeListI in rowRangeList){
             var rowRange = rowRangeList[rowRangeListI]
             if (rowRange.check){
-                var min=Math.min(rowRange.col1,rowRange.col2)
-                var max=Math.max(rowRange.col1,rowRange.col2)
-                for (var count=min;count<=max;count++){
-                    rowColList.push({rowNum:rowRange.row,colNum:count})
+                console.log(rowRange)
+                var start=rowRange.col1
+                var end=rowRange.col2
+
+                if (start<=end){
+                    for(var count=start;count<=end;count++){
+                        rowColList.push({rowNum:rowRange.row,colNum:count})
+                    }
+                }else{
+                    for(var count=start;count>=end;count--){
+                        rowColList.push({rowNum:rowRange.row,colNum:count})
+                    }
                 }
+                
             }
         }
         return {rowColGroupList:[{rowColList}]}
@@ -599,6 +687,7 @@ class Result{
         document.querySelector("#Result").value=JSON.stringify(form, null, 2)
     }
     static async postMultyResult(){
+        console.log("postMultyResult")
         var postUserList=UserInfo.userCheckBox()
         for (var postUserListI in postUserList){
             console.log(users,postUserList)

@@ -102,3 +102,6 @@ input[type="number"] {
 .RowColGroupList{
     display: flex;
 }
+.BMBIRange{
+    display: flex;
+}

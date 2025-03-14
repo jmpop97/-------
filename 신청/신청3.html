@@ -20,6 +20,8 @@
     <div>
         <label for="users">유저정보</label>
         <textarea id = "userInfo" cols="100" rows="10"></textarea></p>
+        <button id="setUser" type="button"class="fixed-link-button">유저정보입력</button>
+
         <br>
             <div id="userCheck">
             <button id="addOneUser">유저 단일 추가</button>
@@ -42,6 +44,7 @@
         <div class="form-group">
             <label for="notificationUrl">공지 주소:</label>
             <input type="text" id="notificationUrl" name="notificationUrl">
+            <button type="button" id="loadAlertData"class="fixed-link-button">공지 정보 불러오기</button>
         </div>
         <div class="form-group">
             <label for="eventPeriod">티켓 오픈 :</label>
@@ -54,6 +57,8 @@
         </div>
         <div class="form-group">
             <label for="siteUrl">사이트 주소:</label>
+            <button id="loadProductData" type="button"class="fixed-link-button">상품 정보 불러오기</button>
+
             <input type="text" id="siteUrl" name="siteUrl">
         </div>
 
@@ -62,6 +67,8 @@
             <input type="text" id="place" name="place" >
             <input type="text" id="placeId" name="placeId" >
             <input type="text" id="selfDefineBlock" name="selfDefineBlock" value="001">
+            <button  type= "button" id ="firstUrl" href="" target="_blank" class="fixed-link-button">좌석 이미지 열기</button>
+
         </div>
 
         <div class="form-group">
@@ -96,8 +103,8 @@
             <button type="button" id="test">Test</button>
             <div id ="ticketingMode">
                 <select id ="ticketingModeSelect">
-                    <option value="NORMAL">NORMAL</option>
                     <option value="BMBI">BMBI</option>
+                    <option value="NORMAL">NORMAL</option>
                 </select>
             </div>
             <div id="modeForm">
@@ -127,10 +134,6 @@
 
 <div class="preview">
     <button id="saveJson"class="fixed-link-button">내용저장</button>
-    <button id="setUser"class="fixed-link-button">유저정보입력</button>
-    <button id="loadAlertData"class="fixed-link-button">공지 정보 불러오기</button>
-    <button id="loadProductData"class="fixed-link-button">상품 정보 불러오기</button>
-    <button id ="firstUrl" href="" target="_blank" class="fixed-link-button">좌석 이미지 열기</button>
     <button id="Message" class="fixed-link-button">메세지 복사</button>
     <button id="getResultForm" class="fixed-link-button">결과보기</button>
     <button id="postResult" class="fixed-link-button">결과보내기</button>
