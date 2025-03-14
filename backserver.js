@@ -295,8 +295,10 @@ async function postTerminal(fileName,Test) {
   // terminal=`cat InitData/${fileName} | jq . | curl -X POST -k "https://wle.kr/tkInfos" -d @-`
   console.log(fileName)
   if (Test){
+    print("test")
     terminal=`cat ${fileName}`
   }else{
+    print("post")
     terminal=`cat ${fileName} | jq . | curl -X POST -k "https://wle.kr/tkInfos" -d @-`
   }
   const execPromise = util.promisify(exec);
