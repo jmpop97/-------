@@ -80,6 +80,7 @@ class UserInfo{
     constructor(){
         document.getElementById("setUser").addEventListener("click",this.get);
         document.getElementById("addOneUser").addEventListener("click",UserInfo.addUserInfo);
+        document.getElementById("sendMessage").addEventListener("click",this.sendMessages);
     }
     get(){
         users=JSON.parse(document.getElementById("userInfo").value)
@@ -90,7 +91,6 @@ class UserInfo{
     static getPhoneCount(){
         //횟수 카운팅
         for (var i in users){
-            console.log(users[i])
             var phone=users[i]["siteLoginInfo"]
             if (phoneCount[phone]){
                 phoneCount[phone].count+=1
@@ -191,10 +191,6 @@ class UserInfo{
         document.getElementById("siteLoginInfo").value=user["siteLoginInfo"]
     }
     
-    static userRadio(){
-        const selectedGender = document.querySelector('input[name="gender"]:checked')?.value;
-        console.log(selectedGender);
-    }
     static userCheckBox(){
         const selectedValues = Array.from(document.querySelectorAll('input[name="userSelect"]:checked'))
         .map(checkbox => checkbox.value); // 체크된 항목들의 value 값 배열 생성
@@ -204,7 +200,7 @@ class UserInfo{
         var user={
             "id":"1",
             "userHp": "0",
-            "userTicketOpenName": "",
+            "userTicketOpenName": users[0]?.userTicketOpenName,
             "#1-": null,
             "playDateTime": "",
             "siteLoginInfo": "",
@@ -213,7 +209,6 @@ class UserInfo{
             "checked":true
         }
         users.push(user)
-        console.log(users)
         var phone=user["userHp"]
         if (phoneCount[phone]){
             phoneCount[phone].count+=1
@@ -224,6 +219,34 @@ class UserInfo{
             phoneCount[phone]["user"]=[user]
         }
         UserInfo.getCheckbox()
+    }
+
+    async sendMessages(){
+        alert("메세지 보내기 시작")
+        var goodsName=document.getElementById("title").value
+        console.log(users)
+        const uniqueUserHp = [...new Set(users.map(entry => entry.siteLoginInfo.split(' ')[0]))];
+        console.log(uniqueUserHp[0])
+        var to=uniqueUserHp[0]
+        await UserInfo.sendMessage({nickname,goodsName,to})
+        alert("메세지 보내기 끝")
+
+    }
+    static async sendMessage(body){
+        const url = "http://127.0.0.1:8080/sendMessage";
+        var data= await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(body),
+        }).then(response => {
+            return response.text();
+        }).then(text => {
+            const data = JSON.parse(text);
+            return data
+        }).catch(error => {
+            window.alert(["fail"]);
+            window.open(alertUrl)
+        });
+        console.log(data)
     }
 }
 class NotificationUrl{
@@ -736,7 +759,7 @@ class Button{
         document.getElementById("saveJson").addEventListener("click",this.saveData);
     }
     async saveData(){
-        alter("startSave")
+        alert("startSave")
         console.log("saveData")
         let datas={}
         datas.userInfo=document.querySelector("#userInfo").value
@@ -770,7 +793,7 @@ class Button{
         }).catch(error => {
             window.alert(["fail"]);
         });
-        alter("endSave")
+        alert("endSave")
 
     }
 }

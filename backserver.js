@@ -335,8 +335,7 @@ function sendMessage(request,res){
   })
 }
 async function sendMessageTerminal(nickname,goodsName,to){
-  nickname="오이"
-  goodsName="goods"
+  console.log(nickname,goodsName)
   text=`안녕하세요! \\"${nickname}\\"입니다. \n\ \n\ 이번 \[${goodsName} \] \n\ 진행하게 되었습니다. \n\ \n\ 잘부탁드립니다. \n\ \n\ 좋은티켓 드리기위해 \n\ 최선을 다하겠습니다.`
   terminal=`osascript -e 'tell application "Messages" to send "${text}" to buddy "(${to})"'`
   const execPromise = util.promisify(exec);
