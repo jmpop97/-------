@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공연 정보 입력</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+    <h1>공연 정보 입력</h1>
+
+
+    <div id ="prefixSelector">
+        <select id ="selectFile">
+            <option value="">-- 선택하세요 --</option>
+        </select>
+    </div>
+    <hr style="border: solid 10px black;">
+    <div>
+        <label for="users">유저정보</label>
+        <textarea id = "userInfo" cols="100" rows="10"></textarea></p>
+        <button id="setUser" type="button"class="fixed-link-button">유저정보입력</button>
+        <br>
+            <div id="userCheck">
+            <button id="addOneUser">유저 단일 추가</button>
+        </div>
+        <br />
+        <button type="button" id="sendMessage">sendMessage</button>
+
+        <div class="form-group">
+            <label for="title">공연 이름</label>
+            <input type="text" id="title" name="seatGradeEnd"  >
+        </div>
+        <div class="form-group">
+            <label for="playDateTimeSelecter">playDateTime:</label>
+            <input type="text" id="playDateTime" name="playDateTime"  >
+        </div>
+        <div class="form-group">
+            <label for="siteLoginInfo">siteLoginInfo</label>
+            <textarea id = "siteLoginInfo" cols="100" rows="1"></textarea></p>
+        </div>
+    </div>
+    <hr style="border: solid 10px black;">
+    <form id="ticketForm">
+        <div class="form-group">
+            <label for="notificationUrl">공지 주소:</label>
+            <input type="text" id="notificationUrl" name="notificationUrl">
+            <button type="button" id="loadAlertData"class="fixed-link-button">공지 정보 불러오기</button>
+        </div>
+        <div class="form-group">
+            <label for="eventPeriod">티켓 오픈 :</label>
+            <div id ="openTime">
+                <select id ="openTimeSelect">
+                    <option value="">-- 선택하세요 --</option>
+                </select>
+            </div>
+            <input type="text" id="eventPeriod" name="eventPeriod">
+        </div>
+        <div class="form-group">
+            <label for="siteUrl">사이트 주소:</label>
+            <button id="loadProductData" type="button"class="fixed-link-button">상품 정보 불러오기</button>
+
+            <input type="text" id="siteUrl" name="siteUrl">
+        </div>
+
+        <div class="form-group">
+            <label for="place">장소 (Place):</label>
+            <input type="text" id="place" name="place" >
+            <input type="text" id="placeId" name="placeId" >
+            <input type="text" id="selfDefineBlock" name="selfDefineBlock" value="001">
+            <button  type= "button" id ="firstUrl" href="" target="_blank" class="fixed-link-button">좌석 이미지 열기</button>
+            <div >
+                <iframe id ="imgPath"src="" width="100%" height="300"></iframe>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="exclusive">인터파크 단독여부:</label>
+            <input type="checkbox" id="exclusive" name="exclusive">
+        </div>
+        <div class="form-group">
+            <label for="discount">할인:</label>
+            <div id ="discountSelecter">
+                <select id ="discountSelect">
+                    <option value="">-- 선택하세요 --</option>
+                </select>
+            </div>
+            <input type="text" id="discount" name="discount"  >
+        </div>
+
+
+        <hr style="border: solid 10px black;">
+        <div class="form-group">
+            <label for="openNotice">티켓 오픈 공지여부:</label>
+            <input type="checkbox" id="openNotice" name="openNotice">
+        </div>
+
+
+        <div class="form-group">
+            <label for="snsUrl">SNS 주소:</label>
+            <input type="text" id="snsUrl" name="snsUrl" >
+        </div>
+                
+        <div class="form-group">
+            <label for="ticketingMode">ticketingModeSelect:</label>
+            <div id ="ticketingMode">
+                <select id ="ticketingModeSelect">
+                    <option value="BMBI">BMBI</option>
+                    <option value="NORMAL">NORMAL</option>
+                </select>
+            </div>
+            <div id="modeForm">
+                <!-- <label for="rowColGroupList">rowColGroupList:</label>
+                <div class="rowColGroupList" id ="rowColGroupList">
+                    <div class="seatField" aria-valuetext=0>
+                        <label for="number-to-show-0">rowNum</label>
+                        <input type="number" id="rowNum-0" value="1">
+                        <label for="number-to-show-0">colNumStart</label>
+                        <input type="number" id="colNum-0-0">
+                        <label for="number-to-show-0">colNumEnd</label>
+                        <input type="number" id="colNum-0-1">
+                        <button type="button" id="addRow">추가하기</button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        
+
+
+        <div class="form-group">
+            <label for="Result">Result</label>
+            <textarea id = "Result" cols="100" rows="50"></textarea></p>
+        </div>
+    </form>
+</div>
+
+<div class="preview">
+    <button id="saveJson"class="fixed-link-button">내용저장</button>
+    <button id="Message" class="fixed-link-button">메세지 복사</button>
+    <button id="getResultForm" class="fixed-link-button">결과보기</button>
+    <button id="postResult" class="fixed-link-button">결과보내기</button>
+    <button id="postMultyResult" class="fixed-link-button">결과여러개보내기</button>
+    <button id ="goMoney"type="button" class="fixed-link-button" onclick="location.href='file:/Users/jmpop/projects/work/인터파크자동화/수금/수금.html' ">수금 이동</button>
+    <a id ="reset" href="" class="fixed-link-button">리셋</a>
+</div>
+<script src="../env.js"></script>
+<script src="main4.js"></script>
+
+</body>
+</html>

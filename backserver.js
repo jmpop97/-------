@@ -32,7 +32,11 @@ var server = http.createServer(function(request,res){
       discountData(request,res)
     }else if(url == "/alertData"){
       alertData(request,res)
-    }else if(url == "/money/initList"){
+    }else if(url == "/sendMessage"){
+      sendMessage(request,res)
+    }
+    
+    if(url == "/money/initList"){
       initMoneyList(request,res)
     }else if(url == "/money/loadInit"){
       loadMoneyInit(request,res)
@@ -310,7 +314,40 @@ async function postTerminal(fileName,Test) {
   }
   return "실패"
 }
-
+function sendMessage(request,res){
+  var body = ''
+  request.on('data', function(data) {
+    body += data
+  })
+  request.on('end', async function() {
+    result = {}
+    body=JSON.parse(body)
+    try {
+      result = await sendMessageTerminal(body.nickname,body.goodsName,body.to)
+      console.log("result",result)
+    }catch{
+      result ={}
+    }
+    console.log(result)
+    res.setHeader('Content-Type', 'application/json charset=utf-8')
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify(result))
+  })
+}
+async function sendMessageTerminal(nickname,goodsName,to){
+  nickname="오이"
+  goodsName="goods"
+  text=`안녕하세요! \\"${nickname}\\"입니다. \n\ \n\ 이번 \[${goodsName} \] \n\ 진행하게 되었습니다. \n\ \n\ 잘부탁드립니다. \n\ \n\ 좋은티켓 드리기위해 \n\ 최선을 다하겠습니다.`
+  terminal=`osascript -e 'tell application "Messages" to send "${text}" to buddy "(${to})"'`
+  const execPromise = util.promisify(exec);
+  try {
+    const { stdout, stderr } = await execPromise(terminal);
+    console.log(stdout)
+    return stdout
+  } catch (error) {
+  }
+  return "실패"
+}
 
 
 //~~~~~~~~~~~~~~~~api~~~~~~~~~~~~~
@@ -495,6 +532,4 @@ let today = new Date();
 // dates=[year,month,date,day]
 return today.toLocaleDateString('ko-KR')
 }
-test="https://ticket.interpark.com/webzine/paper/TPNoticeView.asp?bbsno=34&pageno=1&stext=&no=54488&groupno=54488&seq=0&KindOfGoods=TICKET&Genre=&sort=WriteDate"
-testId="L0000114"
-// getSiteSummary(testId)
+
