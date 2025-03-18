@@ -80,7 +80,8 @@ class UserInfo{
     constructor(){
         document.getElementById("setUser").addEventListener("click",this.get);
         document.getElementById("addOneUser").addEventListener("click",UserInfo.addUserInfo);
-        document.getElementById("sendMessage").addEventListener("click",this.sendMessages);
+        document.getElementById("sendMessage").addEventListener("click",this.sendMessage1);
+        document.getElementById("sendMessages").addEventListener("click",this.sendMessages);
     }
     get(){
         users=JSON.parse(document.getElementById("userInfo").value)
@@ -220,8 +221,7 @@ class UserInfo{
         }
         UserInfo.getCheckbox()
     }
-
-    async sendMessages(){
+    async sendMessage1(){
         alert("메세지 보내기 시작")
         var goodsName=document.getElementById("title").value
         console.log(users)
@@ -229,6 +229,18 @@ class UserInfo{
         console.log(uniqueUserHp[0])
         var to=uniqueUserHp[0]
         await UserInfo.sendMessage({nickname,goodsName,to})
+        alert("메세지 보내기 끝")
+
+    }
+    async sendMessages(){
+        alert("메세지 보내기 시작")
+        var goodsName=document.getElementById("title").value
+        console.log(users)
+        const uniqueUserHp = [...new Set(users.map(entry => entry.siteLoginInfo.split(' ')[0]))];
+        for (var uniqueUserHpI in uniqueUserHp){
+            var to=uniqueUserHp[uniqueUserHpI]
+            await UserInfo.sendMessage({nickname,goodsName,to})
+        }
         alert("메세지 보내기 끝")
 
     }
