@@ -736,7 +736,7 @@ class Button{
         document.getElementById("saveJson").addEventListener("click",this.saveData);
     }
     async saveData(){
-        alter("startSave")
+        alert("startSave")
         console.log("saveData")
         let datas={}
         datas.userInfo=document.querySelector("#userInfo").value
@@ -770,7 +770,7 @@ class Button{
         }).catch(error => {
             window.alert(["fail"]);
         });
-        alter("endSave")
+        alert("endSave")
 
     }
 }
