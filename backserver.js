@@ -536,7 +536,8 @@ return today.toLocaleDateString('ko-KR')
 
 class Bear{
   static async create(text){
-    let sample = ["'", `"`, "[","]",":","-","_",'`',"@","|","-"];
+    // let sample = ["'", `"`, "[","]",":","-","_",'`',"@","|","-"];
+    let sample = ["'", `"`,'`'];
     let escapedStr = Bear.escapeSpecificCharacters2(text, sample);
     console.log(escapedStr)
     var terminal=`bear create "${escapedStr}"`
@@ -556,6 +557,9 @@ class Bear{
   static escapeSpecificCharacters2(str, chars) {
     let pattern = new RegExp("[" + chars.map(c => c.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join("") + "]", "g");
     return str.replace(pattern, "\\$&");
+  }
+  static escapeSpecificCharacters3(str, chars) {
+    return str.replace(/['"$begin:math:display$$end:math:display$:\-_`@|/]/g, match => (match === "'" || match === '"' ? `//${match}` : `/${match}`));
   }
   static request(request,res){
     var body = ''
