@@ -80,8 +80,8 @@ class UserInfo{
     constructor(){
         document.getElementById("setUser").addEventListener("click",this.get);
         document.getElementById("addOneUser").addEventListener("click",UserInfo.addUserInfo);
-        document.getElementById("sendMessage").addEventListener("click",this.sendMessage1);
-        document.getElementById("sendMessages").addEventListener("click",this.sendMessages);
+        // document.getElementById("sendMessage").addEventListener("click",this.sendMessage1);
+        // document.getElementById("sendMessages").addEventListener("click",this.sendMessages);
     }
     get(){
         users=JSON.parse(document.getElementById("userInfo").value)
@@ -769,6 +769,8 @@ class Result{
 class Button{
     constructor(){
         document.getElementById("saveJson").addEventListener("click",this.saveData);
+        document.getElementById("createBear").addEventListener("click",this.createBear);
+        document.getElementById("BearText").value=sample
     }
     async saveData(){
         alert("startSave")
@@ -807,6 +809,20 @@ class Button{
         });
         alert("endSave")
 
+    }
+    async createBear(){
+        alert("start Bear")
+        var url= "http://127.0.0.1:8080/createBear"
+        var text=document.getElementById("BearText").value
+        var data= await fetch(url, {
+            method: "POST",
+            body: JSON.stringify({text}),
+        }).then(response => {
+            return response.text();
+        }).catch(error => {
+            window.alert(["fail"]);
+        });
+        alert("end Bear")
     }
 }
 file=new FileList()

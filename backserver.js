@@ -34,6 +34,8 @@ var server = http.createServer(function(request,res){
       alertData(request,res)
     }else if(url == "/sendMessage"){
       sendMessage(request,res)
+    }else if(url=="/createBear"){
+      Bear.request(request,res)
     }
     
     if(url == "/money/initList"){
@@ -532,3 +534,46 @@ let today = new Date();
 return today.toLocaleDateString('ko-KR')
 }
 
+class Bear{
+  static async create(text){
+    let sample = ["'", `"`, "[","]",":","-","_",'`',"@","|","-"];
+    let escapedStr = Bear.escapeSpecificCharacters2(text, sample);
+    console.log(escapedStr)
+    var terminal=`bear create "${escapedStr}"`
+    const execPromise = util.promisify(exec);
+    try {
+      const { stdout, stderr } = await execPromise(terminal);
+      console.log(stdout)
+      return stdout
+    } catch (error) {
+    }
+    return "실패"
+  }
+  static escapeSpecificCharacters1(str, chars) {
+    let pattern = new RegExp("[" + chars.map(c => "\\\\" + c).join("") + "]", "g");
+    return str.replace(pattern, "\\$&");
+  }
+  static escapeSpecificCharacters2(str, chars) {
+    let pattern = new RegExp("[" + chars.map(c => c.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join("") + "]", "g");
+    return str.replace(pattern, "\\$&");
+  }
+  static request(request,res){
+    var body = ''
+    request.on('data', function(data) {
+      body += data
+    })
+    request.on('end', async function() {
+      var result = {}
+      body=JSON.parse(body)
+      try {
+        result = await Bear.create(body.text)
+        console.log("result",result)
+      }catch{
+        result ={}
+      }
+      res.setHeader('Content-Type', 'application/json charset=utf-8')
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.end("goodWork")
+    })
+  }
+}
